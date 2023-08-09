@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sadlec Books 2</title>
+  <link rel="stylesheet" href="/style.css">
+  <script type="text/javascript" src="/marked.js" ></script>
+</head>
+<body>
+  <header>
+    <div id="header-container">
+      <a href="/index.html" id="logo">SADLEC Books</a>
+      <div id="nav-login">
+        <a id="increaseFont" class="text-links">A<sup>A</sup><strong>+</strong></a>
+        <a id="decreaseFont" class="text-links">A<sup>A</sup><strong>–</strong></a>
+        <a id="darkModeBtn" class="text-links">☽</a>
+        <div id="navbarUserMenu">
+          <div id="loginMenu"></div>
+        </div>
+      </div>
+      <div class="burger">
+        <span class="line1"></span>
+        <span class="line2"></span>
+        <span class="line3"></span>
+      </div>
+    </div>
+    <div id="progress-container">
+      <div id="progressBar"></div>
+    </div>
+  </header>
+
+  <div id="container"></div>
+
+  <div id="progress-loader">
+    <img width="50px" src="/assets/progress.png" alt="">
+  </div>
+
+  <div id="bookmarkBtn">🔖</div>
+  <div id="infoToast"></div>
+
+  <div id="tocModal">
+    <img src="/assets/book.png" alt="">
+  </div>
+
+  <div id="tocModalView" class="modalView">
+    <div class="modal-content">
+      <span id="closeBtn">&times;</span>
+      <div id="modal-text"></div>
+    </div>
+  </div>
+
+  <a id="backToTop" href="#top">⤒</a>
+  <script src="/script.js"></script>
+</body>
+</html>
