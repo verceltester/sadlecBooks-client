@@ -22,7 +22,7 @@
 
 @font-face {
   font-family: "sabon";
-  src: url("http://127.0.0.1:5500/fonts/sabon.woff");
+  src: url("/fonts/sabon.woff");
 }
 
 body {
