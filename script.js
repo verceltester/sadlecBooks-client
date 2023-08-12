@@ -59,7 +59,8 @@ async function fetchAndDisplayBookDetails(url) {
 
   let detailsContainer = document.createElement('div')
   detailsContainer.setAttribute("id", "details-container")
-  detailsContainer.innerHTML = `<div id="bookCoverDetails">
+  detailsContainer.innerHTML = `<h1 class="toc-book-title">${bookDetails.bookTitle}</h1>
+                                  <div id="bookCoverDetails">
                                   <img src="${bookDetails.image}"></img>
                                   <a class="link-btn bookDetailsBtn" href="/book/${bookDetails.id}/toc">Read Book</a>
                                   <a class="link-btn bookDetailsBtn" href="https://www.aurokart.com" target="_blank">Buy Physical Copy</a>
@@ -814,6 +815,9 @@ function handleBookmarkDisplayAction(chapTitle, url) {
 
 function createTOCModal(bookNumber) {
   let tocModal = document.getElementById('tocModal')
+  let tocModalImg = document.createElement('img')
+  tocModalImg.src = "/assets/book.png"
+  tocModal.appendChild(tocModalImg)
 
   let modalView = document.getElementById('tocModalView')
   let closeBtn = document.getElementById('closeBtn')
