@@ -1,8 +1,6 @@
 // const API_URL = "http://127.0.0.1:8000/api"
 const API_URL = "https://sadlecapi.vercel.app/api"
 
-//testing redeployment
-
 async function fetchAndDisplayBooks() {
   let res = await fetch(`${API_URL}/book`)
 
@@ -54,23 +52,20 @@ async function fetchAndDisplayBookDetails(url) {
   let booksContainer = document.createElement('div')
   booksContainer.classList.add("box-shadow")
 
-  let bookTitle = document.createElement('h1')
-  bookTitle.classList.add("toc-book-title")
-  bookTitle.innerText = bookDetails.bookTitle
-  booksContainer.appendChild(bookTitle)
-
   let detailsContainer = document.createElement('div')
   detailsContainer.setAttribute("id", "details-container")
   detailsContainer.innerHTML = `<h1 class="toc-book-title">${bookDetails.bookTitle}</h1>
+                                <div id="book-details">
                                   <div id="bookCoverDetails">
-                                  <img src="${bookDetails.image}"></img>
-                                  <a class="link-btn bookDetailsBtn" href="/book/${bookDetails.id}/toc">Read Book</a>
-                                  <a class="link-btn bookDetailsBtn" href="https://www.aurokart.com" target="_blank">Buy Physical Copy</a>
-                                </div>
-                                <div id="bookOtherDetails">
-                                  <div><strong>Author</strong>: ${bookDetails.bookAuthor}</div>
-                                  <div><strong>Price</strong>: Rs.${bookDetails.bookPrice}</div>                                  
-                                  <div>${bookDetails.otherinfo}</div>                                  
+                                    <img src="${bookDetails.image}"></img>
+                                    <a class="link-btn bookDetailsBtn" href="/book/${bookDetails.id}/toc">Read Book</a>
+                                    <a class="link-btn bookDetailsBtn" href="https://www.aurokart.com" target="_blank">Buy Physical Copy</a>
+                                  </div>
+                                  <div id="bookOtherDetails">
+                                    <div><strong>Author</strong>: ${bookDetails.bookAuthor}</div>
+                                    <div><strong>Price</strong>: Rs.${bookDetails.bookPrice}</div>                                  
+                                    <div>${bookDetails.otherinfo}</div>                                  
+                                  </div>
                                 </div>`
 
   booksContainer.appendChild(detailsContainer)
@@ -199,7 +194,8 @@ async function fetchAndDisplayChapterText(url) {
       handleBookmarkDisplayAction(chapText.chapTitle, url)
       setProgressbarBackToTop() 
 
-  createTOCModal(urlArray[0])
+      createTOCModal(urlArray[0])
+
   } else {
     const topContainer = document.getElementById('container')
     let dataContainer = document.createElement('div')
@@ -286,7 +282,7 @@ async function fetchAndDisplaySubhead1Text(url) {
       handleBookmarkDisplayAction(subhead1Text.subhead1Titles, url)
       setProgressbarBackToTop() 
       
-  // createTOCModal(urlArray[0])
+  createTOCModal(urlArray[0])
   } else {
     const topContainer = document.getElementById('container')
     let dataContainer = document.createElement('div')
@@ -377,7 +373,7 @@ async function fetchAndDisplaySubhead2Text(url) {
       handleBookmarkDisplayAction(subhead2Text.subhead2Titles, url)
       setProgressbarBackToTop();
 
-  // createTOCModal(urlArray[0])
+  createTOCModal(urlArray[0])
   } else {
     const topContainer = document.getElementById('container')
     let dataContainer = document.createElement('div')
@@ -400,7 +396,7 @@ function loginUser() {
 
   form.innerHTML = `<form>
     <div class="form-title">
-      <div>Log in to Sadlec Books</div>
+      <h5>Log in to Sadlec Books</h5>
     </div>
 
     <div class="form-container">
@@ -940,6 +936,7 @@ function enableDarkMode() {
   root.style.setProperty("--global-bg-color", "#282828")
   root.style.setProperty("--global-text-color", "#fff")
   root.style.setProperty("--para-hover-color", "rgb(72, 71, 71)")
+  root.style.setProperty("--breadcrumbs-boxshadow-color", "#f7f5f530")
 }
 
 function disableDarkMode() {
@@ -951,6 +948,7 @@ function disableDarkMode() {
   root.style.setProperty("--global-bg-color", "#fff")
   root.style.setProperty("--global-text-color", "#000")
   root.style.setProperty("--para-hover-color", "rgb(232, 232, 232)")
+  root.style.setProperty("--breadcrumbs-boxshadow-color", "#0000003b")
 }
 
 let burger = document.querySelector(".burger")
