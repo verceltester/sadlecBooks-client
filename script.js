@@ -469,6 +469,9 @@ function registerNewUser() {
     <label for="uname"><b>Username*</b></label>
     <input type="email" placeholder="Enter email" name="uname" required>
 
+    <label for="birthday">Birthday</label>
+    <input type="date" id="birthday" name="birthday" required> 
+
     <label for="psword"><b>Password*</b></label>
     <input type="password" placeholder="Enter Password" name="psword" required>
 
@@ -495,6 +498,7 @@ form.addEventListener("submit", (e) => {
     alert("Please agree to the terms and conditions.")
     return
   }
+  console.log(e.target['birthday'].value)
   showloader()
   fetch (`${API_URL}/user/register/`, {
     method: 'POST',
@@ -507,6 +511,7 @@ form.addEventListener("submit", (e) => {
       password: e.target["psword"].value,
       name: e.target['name'].value,
       password2: e.target['cnfpsword'].value,
+      birthday: e.target['birthday'].value,
       tc: e.target['tc'].checked
    }),
   })
