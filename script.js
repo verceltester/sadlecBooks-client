@@ -675,15 +675,8 @@ async function profileSection() {
 // Utility Functions ======================================//
 
 function parseMD(text){
-  // marked.use({
-  //   gfm: true
-  // });
-  // let md = window.markdownit().use(window.markdownitFootnote);
-  // result = md.render(result);
-  // let result = text.replaceAll("\* \* \*", "<p style='text-align: center;'>* * *</p>")
-  // console.log(result)
-  result = marked.parse(text)
-  return result
+  let md = window.markdownit({html:true}).use(markdownitFootnote)
+  return md.render(text)
 }
 
 function SetUserLoggedInDisplay() {
@@ -859,16 +852,16 @@ function setProgressbarBackToTop() {
     var height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
     var scrolled = (winScroll / height) * 100;
     progressBar.style.width = scrolled + "%";
-    if(scrolled > 20) backToTop.style.display = 'block'
+    if(scrolled > 8) backToTop.style.display = 'block'
     else backToTop.style.display = 'none'
   }
 }
 
 function hideloader() {
-  document.getElementById('progress-loader').style.display = 'none';
+  document.getElementById('progress-loader').style.visibility = 'hidden';
 }
 function showloader() {
-  document.getElementById('progress-loader').style.display = 'block';
+  document.getElementById('progress-loader').style.visibility = 'visible';
 }
 
 function getNumFromURL(url) {

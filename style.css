@@ -195,16 +195,18 @@ header {
 /*-------------------------------progress loader-----------------------*/
 
 #progress-loader {
-  position: absolute;
-  top: 30%;
-  left: 47%;
-  height: 50px;
-  width: 50px;
+  position: fixed;
+  top: 0;
+  height: 100vh;
+  width: 100vw;
   z-index: 10;
+  display: flex;
+  align-content: center;
+  align-items: center;
+  justify-content: center;
 }
 
 #progress-loader img {
-  width: 100%;
   -moz-animation-name: rotation;
   -moz-animation-duration: 0.65s;
   -moz-animation-timing-function: linear;
@@ -663,7 +665,7 @@ form {
 }
 
 .toggle .line1 {
-  transform: rotateZ(45deg) translateY(375%);
+  transform: rotateZ(45deg) translateY(460%);
   background-color: var(--global-text-color);
 }
 
@@ -672,7 +674,7 @@ form {
 }
 
 .toggle .line3 {
-  transform: rotateZ(-45deg) translateY(-378%);
+  transform: rotateZ(-45deg) translateY(-511%);
   background-color: var(--global-text-color);
 }
 
@@ -701,7 +703,7 @@ form {
   }
 
   .burger span {
-    padding: 0.1rem 1.3rem;
+    padding: 0.05rem 1.2rem;
     background: var(--global-text-color);
     margin: 0.3rem 0rem;
     display: block;
@@ -720,8 +722,12 @@ form {
     padding: .8rem .5rem;
   }
 
+  .text-container ol {
+    padding: 0 1rem 0 1rem;
+  }
+
   .breadcrumbs {
-    border-radius: 20px;
+    border-radius: 20px 20px 6px 6px;
   }
 
   #nav-login{
@@ -745,6 +751,10 @@ form {
 
   .form-container {
     width: 100%;
+  }
+
+  .text-bottom-nav {
+    padding: 0 2rem;
   }
 }
 
