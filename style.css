@@ -7,6 +7,7 @@
 
 :root{
   --body-font-size: 18px;
+  /* --p-line-height: 26px; */
   --primary-color: #ff5906;
   --global-bg-color: #fff;
   --global-text-color: #000;
@@ -39,16 +40,21 @@ a {
 
 p {
   /* margin-bottom: .1rem; */
-  line-height: 1.8rem;
+  /* line-height: var(--p-line-height); */
   padding: .8rem 1.2rem;
   border-radius: 10px;
+  /* position: relative; */
+}
+
+.hiddenClass {
+  display: none;
 }
 
 /* ------------------------ all p tags bookmark button ----------------*/
 #bookmarkBtn {
-  position: absolute;
-  right: 0;
-  top: -16px;
+  position: sticky;
+  padding-left: 101%;
+  top: 10%;
   font-size: 32px;
   cursor: pointer;
 }
@@ -158,7 +164,6 @@ header {
 }
 
 #loginMenu {
-  display: none;
   position: absolute;
   top: 100%;
   background: var(--global-bg-color);
@@ -307,7 +312,7 @@ header {
 }
 
 .toc-book-title {
-  font-size: 1.7rem;
+  /* font-size: 1.7rem; */
   margin-bottom: 3rem;
   text-align: center;
   font-weight: bold;
@@ -532,6 +537,10 @@ form {
   border-radius: 3px;
 }
 
+.del-bookmark-img:hover {
+  background-color:#888;
+}
+
 /*---------------------------------- TOC Modal CSS ----------------------------------*/
 
 #tocModal {
@@ -624,7 +633,7 @@ form {
   border-radius: 2px;
   padding: 16px;
   position: fixed;
-  z-index: 1;
+  z-index: 100;
   left: 50%;
   bottom: 30px;
 }

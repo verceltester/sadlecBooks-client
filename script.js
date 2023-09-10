@@ -135,6 +135,7 @@ async function fetchAndDisplayChapterText(url) {
     dataContainer.classList.add("box-shadow", "error")
     dataContainer.innerHTML = `Please <a style="text-decoration:underline" class="text-links" href="/login">login</a> to access this section`
     topContainer.appendChild(dataContainer)
+    createLoginModal()
     hideloader();
     localStorage.removeItem("token")
     localStorage.removeItem("uName")
@@ -419,32 +420,38 @@ function loginUser() {
   form.addEventListener("submit", (e) => {
     showloader()
     e.preventDefault()
-    fetch (`${API_URL}/user/login/`, {
-      method: 'POST',
-      headers: {
-        Accept: "application/json, text/plain, */*",
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        email: e.target["uname"].value,
-        password: e.target["psword"].value
-    }),
-  })
-  .then((response) => response.json())
-  .then((result) => {
-    if(result.errors){
-      hideloader()
-      alert("Wrong credentials.")
-      } else {
+      fetch (`${API_URL}/user/login/`, {
+        method: 'POST',
+        headers: {
+          Accept: "application/json, text/plain, */*",
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          email: e.target["uname"].value,
+          password: e.target["psword"].value
+      }),
+    })
+    .then((response) => response.json())
+    .then((result) => {
+      if(result.errors){
         hideloader()
-        localStorage.setItem("token", result.token['access token'])
-        localStorage.setItem("uName", result.user)
-        localStorage.setItem("profileId", result.profileId)
-        window.open(`/`, '_self')
-      }
-  }) .catch((err) => {
-    console.log(err)
-  })
+        showInfoToast("Wrong credentials.")
+        } else {
+          hideloader()
+          localStorage.setItem("token", result.token['access token'])
+          localStorage.setItem("uName", result.user)
+          localStorage.setItem("profileId", result.profileId)
+          let redirUrl = localStorage.getItem("redirUrl")
+          if (redirUrl) {
+            localStorage.removeItem("redirUrl")
+            window.open(redirUrl, '_self')
+          } else {
+            window.open(`/`, '_self')
+          }        
+        }
+    }) .catch((err) => {
+      console.log(err)
+    })
   })
 
 }
@@ -491,11 +498,11 @@ function registerNewUser() {
 form.addEventListener("submit", (e) => {
   e.preventDefault()
   if (e.target['cnfpsword'].value !== e.target["psword"].value) {
-    alert("Passwords don't match")
+    showInfoToast("Passwords don't match")
     return
   }
   if (!e.target['tc'].checked) {
-    alert("Please agree to the terms and conditions.")
+    showInfoToast("Please agree to the terms and conditions.")
     return
   }
   console.log(e.target['birthday'].value)
@@ -519,7 +526,7 @@ form.addEventListener("submit", (e) => {
  .then((result) => {
    hideloader()
    if(result.errors?.email){
-     alert("Email already registered.")
+    showInfoToast("Email already registered.")
      return
     } else {
       form.innerHTML = `<form class="login-form">
@@ -682,12 +689,12 @@ function parseMD(text){
 function SetUserLoggedInDisplay() {
   let logArea = document.getElementById("navbarUserMenu")
   let loginMenu = document.getElementById("loginMenu")
-  let displayValue = window.getComputedStyle(loginMenu).display;
+  let defaultAvatar = document.createElement('img')
 
   let isLoggedIn = localStorage.getItem("token")
 
   if(isLoggedIn) {
-    let defaultAvatar = document.createElement('img')
+    defaultAvatar.setAttribute("id", "navbarBtnImg")
     defaultAvatar.src = '/assets/defaultAvatar.png'
     logArea.appendChild(defaultAvatar)
     loginMenu.innerHTML = `<div><a class="text-links" href="/profile">Profile</a></div>
@@ -695,11 +702,10 @@ function SetUserLoggedInDisplay() {
     <div id="logoutBtn"><a class="text-links" href="/">Logout</a></div>`
     document.getElementById('logoutBtn')
     logoutBtn.addEventListener('click', () => {
-    localStorage.clear();
-    window.open('/', '_self')
-  })
+      localStorage.clear();
+      window.open('/', '_self')
+    })
   } else {
-    let defaultAvatar = document.createElement('img')
     defaultAvatar.src = '/assets/defaultAvatar.png'
     logArea.appendChild(defaultAvatar)
     loginMenu.innerHTML = `<div><a class="text-links" href="/login">Login</a></div>
@@ -707,14 +713,14 @@ function SetUserLoggedInDisplay() {
   }
 
   logArea.addEventListener('click', () => {
-    if(displayValue === "none") {
-      loginMenu.style.display = "block"
-      displayValue = 'block'
-    } else {
-      loginMenu.style.display = "none"
-      displayValue = 'none'
-    }
+    loginMenu.classList.toggle("hiddenClass")
   })
+
+  window.addEventListener('click', function(e) {
+    if (e.target !== defaultAvatar) {
+    loginMenu.classList.add("hiddenClass")
+    }
+  }) 
 }
 
 function showInfoToast(msg) {
@@ -788,22 +794,23 @@ function handleBookmarkDisplayAction(chapTitle, url) {
         else if (response.status === 401)
         showInfoToast("Bookmark already added!")
         hideloader()
-        console.log(response)
       })
     }
   })
   
-  let idNum = 0;
   let pTags = document.getElementsByTagName("p")
       for(let i = 0; i < pTags.length; i++) {
-        idNum++
-        pTags[i].setAttribute('id', idNum)
+        pTags[i].setAttribute('id', i+1)
+        // let bookmarkBtn = document.createElement("div")
+        // bookmarkBtn.setAttribute("id", "bookmarkBtn")
+        // bookmarkBtn.innerText = "🔖"
+        // pTags[i].appendChild(bookmarkBtn)
         pTags[i].addEventListener("mouseover", (e) => {
           if(e.target.localName === 'p'){
             e.target.style.position = 'relative'
             currentParaId = e.target.id
           }
-          pTags[i].appendChild(bookmarkBtn)
+          pTags[i].prepend(bookmarkBtn)
         })
       }
       
@@ -838,8 +845,80 @@ function createTOCModal(bookNumber) {
   window.onclick = function(e) {
     if (e.target == modalView) {
       modalView.style.display = "none";
+      console.log("modalClick")
     }
   }
+}
+
+function createLoginModal() {
+  let modalView = document.getElementById('tocModalView')
+  let closeBtn = document.getElementById('closeBtn')
+  closeBtn.style.display = "none"
+  let modalContent = document.getElementById('modal-text')
+
+  let form = document.createElement('form')
+
+  form.innerHTML = `<form>
+    <div class="form-title">
+      <h5>Log in to Sadlec Books</h5>
+    </div>
+
+    <div class="form-container">
+      <label for="uname"><b>Username</b></label>
+      <input type="email" placeholder="Enter Username" name="uname" required>
+
+      <label for="psword"><b>Password</b></label>
+      <input type="password" placeholder="Enter Password" name="psword" required>
+        
+      <button class="link-btn" type="submit">Login</button>
+
+      <a class="text-links" href="/register">Register as a new user</a>
+    </div>
+  </form>`
+
+  modalContent.appendChild(form)
+  modalView.style.display = 'block'
+
+  const url = window.location.pathname;
+  localStorage.setItem('redirUrl', url)
+
+  form.addEventListener("submit", (e) => {
+    showloader()
+    e.preventDefault()
+      fetch (`${API_URL}/user/login/`, {
+        method: 'POST',
+        headers: {
+          Accept: "application/json, text/plain, */*",
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          email: e.target["uname"].value,
+          password: e.target["psword"].value
+      }),
+    })
+    .then((response) => response.json())
+    .then((result) => {
+      if(result.errors){
+        hideloader()
+        showInfoToast("Wrong credentials.")
+        } else {
+          hideloader()
+          localStorage.setItem("token", result.token['access token'])
+          localStorage.setItem("uName", result.user)
+          localStorage.setItem("profileId", result.profileId)
+          let redirUrl = localStorage.getItem("redirUrl")
+          if (redirUrl) {
+            localStorage.removeItem("redirUrl")
+            window.open(redirUrl, '_self')
+          } else {
+            window.open(`/`, '_self')
+          }        
+        }
+    }) .catch((err) => {
+      console.log(err)
+    })
+  })
+  
 }
 
 function setProgressbarBackToTop() {
@@ -957,19 +1036,29 @@ burger.addEventListener('click', () => {
   navDrawer.classList.toggle("nav-open")
 })
 
+let fontSizeLocalStorage = localStorage.getItem("fontSize")
+if(fontSizeLocalStorage) { 
+  document.body.style.fontSize = fontSizeLocalStorage + 'px';
+ }
+
 
 let fontIncBtn = document.getElementById("increaseFont")
 let fontDecBtn = document.getElementById("decreaseFont")
 
 fontIncBtn.addEventListener('click', () => {
-  var rootStyles = window.getComputedStyle(document.body).getPropertyValue('font-size');
-  var fontSize = parseFloat(rootStyles);
-  if(fontSize < 23)
-  document.body.style.fontSize = (fontSize + 1) + 'px';
+  let rootStyles = window.getComputedStyle(document.body).getPropertyValue('font-size');
+  let fontSize = parseFloat(rootStyles);
+  if(fontSize < 23){
+    document.body.style.fontSize = (fontSize + 1) + 'px';
+    localStorage.setItem("fontSize", fontSize+1)
+  }
 })
 fontDecBtn.addEventListener('click', () => {
-  var rootStyles = window.getComputedStyle(document.body).getPropertyValue('font-size');
-  var fontSize = parseFloat(rootStyles);
+  let rootStyles = window.getComputedStyle(document.body).getPropertyValue('font-size');
+  let fontSize = parseFloat(rootStyles);
   if(fontSize > 15)
-  document.body.style.fontSize = (fontSize - 1) + 'px';
+  {
+    document.body.style.fontSize = (fontSize - 1) + 'px';
+    localStorage.setItem("fontSize", fontSize-1)
+  }
 })
