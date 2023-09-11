@@ -683,7 +683,8 @@ async function profileSection() {
 
 function parseMD(text){
   let md = window.markdownit({html:true}).use(markdownitFootnote)
-  return md.render(text)
+  let modtext = text.replaceAll('\\n\\n', "\n\n")
+  return md.render(modtext)
 }
 
 function SetUserLoggedInDisplay() {
