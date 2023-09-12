@@ -7,7 +7,7 @@
 
 :root{
   --body-font-size: 18px;
-  /* --p-line-height: 26px; */
+  --bookmarkbtn-boxshadow-color: rgba(232, 232, 232, 0.5);
   --primary-color: #ff5906;
   --global-bg-color: #fff;
   --global-text-color: #000;
@@ -46,6 +46,10 @@ p {
   /* position: relative; */
 }
 
+h3, h4 {
+  margin-top: 2rem;
+}
+
 .hiddenClass {
   display: none;
 }
@@ -53,10 +57,18 @@ p {
 /* ------------------------ all p tags bookmark button ----------------*/
 #bookmarkBtn {
   position: sticky;
-  padding-left: 101%;
-  top: 10%;
+  top: 20%;
   font-size: 32px;
   cursor: pointer;
+  float: right;
+  margin-right: -5rem;
+}
+
+#bookmarkBtn img {
+  width: 40px;
+  padding: 6px;
+  box-shadow: var(--bookmarkbtn-boxshadow-color) 0px 0px 20px 0px;
+  background: white;
 }
 
 /* ------------------------ all p tags bookmark button ----------------*/
@@ -434,6 +446,7 @@ form {
   text-align: center;
   margin-bottom: 2rem;
   margin-top: 2rem;
+  color: var(--global-text-color);
 }
 
 .form-container {
@@ -446,6 +459,7 @@ form {
 
 .form-container label {
   font-size: 1.5rem;
+  color: var(--global-text-color);
 }
 .form-container input {
   margin-bottom: 2rem;
@@ -764,6 +778,12 @@ form {
 
   .text-bottom-nav {
     padding: 0 2rem;
+  }
+
+  #bookmarkBtn {
+    margin-right: 0;
+    width: 20px;
+    opacity: 85%;
   }
 }
 

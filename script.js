@@ -49,6 +49,7 @@ async function fetchAndDisplayBookDetails(url) {
   let bookDetails = await res.json();
 
   const topContainer = document.getElementById('container')
+  topContainer.style.fontSize = "18px"
   let booksContainer = document.createElement('div')
   booksContainer.classList.add("box-shadow")
 
@@ -130,11 +131,11 @@ async function fetchAndDisplayChapterText(url) {
     headers: {"Authorization": `Bearer ${localStorage.getItem("token")}`}
   })
   if(res.status === 401) {
-    let topContainer = document.getElementById('container')
-    let dataContainer = document.createElement('div')
-    dataContainer.classList.add("box-shadow", "error")
-    dataContainer.innerHTML = `Please <a style="text-decoration:underline" class="text-links" href="/login">login</a> to access this section`
-    topContainer.appendChild(dataContainer)
+    // let topContainer = document.getElementById('container')
+    // let dataContainer = document.createElement('div')
+    // dataContainer.classList.add("box-shadow", "error")
+    // dataContainer.innerHTML = `Please <a style="text-decoration:underline" class="text-links" href="/login">login</a> to access this section`
+    // topContainer.appendChild(dataContainer)
     createLoginModal()
     hideloader();
     localStorage.removeItem("token")
@@ -189,7 +190,11 @@ async function fetchAndDisplayChapterText(url) {
       textTopContainer.appendChild(shadowBox)
 
       hideloader();
+
+      document.getElementById("decreaseFont").classList.remove("hiddenClass")
+      document.getElementById("increaseFont").classList.remove("hiddenClass")
       SetUserLoggedInDisplay()
+
 
       //add bookmark to every p tag
       handleBookmarkDisplayAction(chapText.chapTitle, url)
@@ -214,11 +219,7 @@ async function fetchAndDisplaySubhead1Text(url) {
     headers: {"Authorization": `Bearer ${localStorage.getItem("token")}`}
   })
   if(res.status === 401) {
-    let topContainer = document.getElementById('container')
-    let dataContainer = document.createElement('div')
-    dataContainer.classList.add("box-shadow", "error")
-    dataContainer.innerHTML = `Please <a style="text-decoration:underline" class="text-links" href="/login">login</a> to access this section`
-    topContainer.appendChild(dataContainer)
+    createLoginModal()
     hideloader();
     localStorage.removeItem("token")
     localStorage.removeItem("uName")
@@ -277,6 +278,9 @@ async function fetchAndDisplaySubhead1Text(url) {
       textTopContainer.appendChild(shadowBox)
 
       hideloader();
+
+      document.getElementById("decreaseFont").classList.remove("hiddenClass")
+      document.getElementById("increaseFont").classList.remove("hiddenClass")
       SetUserLoggedInDisplay()
 
       //add bookmark to every p tag
@@ -301,11 +305,7 @@ async function fetchAndDisplaySubhead2Text(url) {
     headers: {"Authorization": `Bearer ${localStorage.getItem("token")}`}
   })
   if(res.status === 401) {
-    let topContainer = document.getElementById('container')
-    let dataContainer = document.createElement('div')
-    dataContainer.classList.add("box-shadow", "error")
-    dataContainer.innerHTML = `Please <a style="text-decoration:underline" class="text-links" href="/login">login</a> to access this section`
-    topContainer.appendChild(dataContainer)
+    createLoginModal()
     hideloader();
     localStorage.removeItem("token")
     localStorage.removeItem("uName")
@@ -369,6 +369,9 @@ async function fetchAndDisplaySubhead2Text(url) {
       textTopContainer.appendChild(shadowBox)
 
       hideloader();
+
+      document.getElementById("decreaseFont").classList.remove("hiddenClass")
+      document.getElementById("increaseFont").classList.remove("hiddenClass")
       SetUserLoggedInDisplay()
 
       handleBookmarkDisplayAction(subhead2Text.subhead2Titles, url)
@@ -558,6 +561,7 @@ async function profileSection() {
     SetUserLoggedInDisplay()
   } else if (res.status === 200) {
     let profileData = await res.json()
+    console.log(profileData)
     let topContainer = document.getElementById("container")
     let shadowContainer = document.createElement('div')
     shadowContainer.classList.add("box-shadow")
@@ -703,7 +707,9 @@ function SetUserLoggedInDisplay() {
     <div id="logoutBtn"><a class="text-links" href="/">Logout</a></div>`
     document.getElementById('logoutBtn')
     logoutBtn.addEventListener('click', () => {
-      localStorage.clear();
+      localStorage.removeItem("token")
+      localStorage.removeItem("uName")
+      localStorage.removeItem("profileId")
       window.open('/', '_self')
     })
   } else {
@@ -771,6 +777,9 @@ function createTOCwithLinks(TOCData){
 function handleBookmarkDisplayAction(chapTitle, url) {
   let currentParaId = null
   let bookmarkBtn = document.getElementById("bookmarkBtn")
+  let bookmarkImg = document.createElement("img")
+  bookmarkImg.src = '/assets/bookmark.jpg'
+  bookmarkBtn.appendChild(bookmarkImg)
   bookmarkBtn.addEventListener('click', (e) => {
     if(currentParaId){
       showloader()
@@ -1015,6 +1024,7 @@ function enableDarkMode() {
   root.style.setProperty("--global-text-color", "#fff")
   root.style.setProperty("--para-hover-color", "rgb(72, 71, 71)")
   root.style.setProperty("--breadcrumbs-boxshadow-color", "#f7f5f530")
+  root.style.setProperty("--bookmarkbtn-boxshadow-color", "rgba(232, 232, 232, 0.5)")
 }
 
 function disableDarkMode() {
@@ -1027,6 +1037,7 @@ function disableDarkMode() {
   root.style.setProperty("--global-text-color", "#000")
   root.style.setProperty("--para-hover-color", "rgb(232, 232, 232)")
   root.style.setProperty("--breadcrumbs-boxshadow-color", "#0000003b")
+  root.style.setProperty("--bookmarkbtn-boxshadow-color", "rgba(117, 116, 116, 0.5)")
 }
 
 let burger = document.querySelector(".burger")
