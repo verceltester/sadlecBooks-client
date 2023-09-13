@@ -18,9 +18,10 @@ async function fetchAndDisplayBooks() {
       aTag.classList.add("text-links")
       let img = document.createElement('img')
       let title = document.createElement('h3');
+      title.style.margin = "0px"
       aTag.href = `/book/${book.id}`
       title.innerHTML = `${book.bookTitle}`;
-      img.src = `${book.image}`
+      img.src = `${book.imagelink}`
 
       aTag.appendChild(img);
       aTag.appendChild(title);
@@ -58,7 +59,7 @@ async function fetchAndDisplayBookDetails(url) {
   detailsContainer.innerHTML = `<h1 class="toc-book-title">${bookDetails.bookTitle}</h1>
                                 <div id="book-details">
                                   <div id="bookCoverDetails">
-                                    <img src="${bookDetails.image}"></img>
+                                    <img src="${bookDetails.imagelink}"></img>
                                     <a class="link-btn bookDetailsBtn" href="/book/${bookDetails.id}/toc">Read Book</a>
                                     <a class="link-btn bookDetailsBtn" href="https://www.aurokart.com" target="_blank">Buy Physical Copy</a>
                                   </div>
@@ -584,7 +585,7 @@ async function profileSection() {
     let profileImage = document.createElement('div')
     profileImage.setAttribute("id", "profile-img")
 
-    profileImage.innerHTML = `<strong>Profile image:</strong> <img style="width:43px" src="http://127.0.0.1:8000/media/default.jpg"></img>`
+    profileImage.innerHTML = `<strong>Profile image:</strong> <img style="width:43px" src="/assets/defaultAvatar.png"></img>`
     profileDetails.appendChild(profileImage)
 
     // let upload = document.createElement('div')
@@ -601,7 +602,10 @@ async function profileSection() {
     profileData.profile.mybookmark.map((bookm, i) => {
       let bookmarkDiv = document.createElement('div')
       bookmarkDiv.classList.add('indi-bookmark')
-      bookmarkDiv.innerHTML = `<div class="bookmark-title"><a class="text-links" href="${bookm.bookmarks.url}">${i+1}. 🔗${bookm.bookmarks.bookmarkTitle}</div></a></div><img id="${bookm.id}" class="del-bookmark-img" src="/assets/bin.png"></img>`
+      bookmarkDiv.innerHTML = `<div class="bookmark-title">
+                                <a class="text-links" href="${bookm.bookmarks.url}">${i+1}. 🔗${bookm.bookmarks.bookmarkTitle}
+                                <div>(${bookm.bookmarks.content}...)</div></a></div>
+                                <img id="${bookm.id}" class="del-bookmark-img" src="/assets/bin.png"></img>`
       bookmarks.appendChild(bookmarkDiv)
     })
     profileDetails.appendChild(bookmarks)
@@ -694,14 +698,14 @@ function parseMD(text){
 function SetUserLoggedInDisplay() {
   let logArea = document.getElementById("navbarUserMenu")
   let loginMenu = document.getElementById("loginMenu")
-  let defaultAvatar = document.createElement('img')
+  let defaultAvatar = document.getElementById("navbarBtnImg")
 
   let isLoggedIn = localStorage.getItem("token")
 
   if(isLoggedIn) {
-    defaultAvatar.setAttribute("id", "navbarBtnImg")
-    defaultAvatar.src = '/assets/defaultAvatar.png'
-    logArea.appendChild(defaultAvatar)
+    // defaultAvatar.setAttribute("id", "navbarBtnImg")
+    // defaultAvatar.src = '/assets/defaultAvatar.png'
+    // logArea.appendChild(defaultAvatar)
     loginMenu.innerHTML = `<div><a class="text-links" href="/profile">Profile</a></div>
     <div"><a class="text-links" href="/profile">Bookmarks</a></div>
     <div id="logoutBtn"><a class="text-links" href="/">Logout</a></div>`
@@ -713,8 +717,8 @@ function SetUserLoggedInDisplay() {
       window.open('/', '_self')
     })
   } else {
-    defaultAvatar.src = '/assets/defaultAvatar.png'
-    logArea.appendChild(defaultAvatar)
+    // defaultAvatar.src = '/assets/defaultAvatar.png'
+    // logArea.appendChild(defaultAvatar)
     loginMenu.innerHTML = `<div><a class="text-links" href="/login">Login</a></div>
     <div><a class="text-links" href="/register">Register</a></div>`
   }
@@ -793,7 +797,8 @@ function handleBookmarkDisplayAction(chapTitle, url) {
         body: JSON.stringify({
           "bookmarks":{
             "bookmarkTitle":`${chapTitle}`,
-            "url":`${url}#${currentParaId}`
+            "url":`${url}#${currentParaId}`,
+            "content": "testing bookmark content"
           },
           "profile":`${localStorage.getItem("profileId")}`
           }),
@@ -803,6 +808,7 @@ function handleBookmarkDisplayAction(chapTitle, url) {
         showInfoToast("Bookmark added!")
         else if (response.status === 401)
         showInfoToast("Bookmark already added!")
+        console.log(response)
         hideloader()
       })
     }

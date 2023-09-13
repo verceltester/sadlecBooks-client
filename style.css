@@ -263,7 +263,9 @@ header {
   flex: 1 1 auto;
   flex-wrap: wrap;
   padding: 2rem;
-  gap: 5rem;
+  gap: 3rem;
+  align-content: center;
+  justify-content: center;
 }
 
 .book {
