@@ -114,6 +114,8 @@ async function fetchAndDisplayBookTOC(url) {
   topContainer.appendChild(shadowBox)
   hideloader();
 
+  // activateTocDropDown()
+
   SetUserLoggedInDisplay()
   } else {
     const topContainer = document.getElementById('container')
@@ -160,7 +162,7 @@ async function fetchAndDisplayChapterText(url) {
       let crumb1 = document.createElement('a')
       crumb1.classList.add("text-links")
       crumb1.innerText = `${chapText.currentBook}`
-      crumb1.href = `/book/${urlArray[0]}`
+      crumb1.href = `/book/${urlArray[0]}/toc`
       let crumb2 = document.createElement('div')
       crumb2.classList.add("crumbs")
       crumb2.innerText = chapText.chapTitle
@@ -200,6 +202,17 @@ async function fetchAndDisplayChapterText(url) {
       //add bookmark to every p tag
       handleBookmarkDisplayAction(chapText.chapTitle, url)
       setProgressbarBackToTop() 
+
+      //Scroll into view
+      var urlLocation = window.location.toString()
+      let checkHref = urlLocation.indexOf('#')
+      if(checkHref !== -1){
+        urlLocation = urlLocation.slice(urlLocation.indexOf('#')+1);
+        const element = document.getElementById(urlLocation);
+        element.scrollIntoView();
+        element.classList.add("hover")
+        setTimeout(() => element.classList.remove("hover"), 4000)
+      }
 
       createTOCModal(urlArray[0])
 
@@ -242,7 +255,7 @@ async function fetchAndDisplaySubhead1Text(url) {
       breadContainer.classList.add("breadcrumbs")
       let crumb1 = document.createElement('a')
       crumb1.innerText = `${subhead1Text.currentBook}`
-      crumb1.href = `/book/${urlArray[0]}`
+      crumb1.href = `/book/${urlArray[0]}/toc`
       crumb1.classList.add("text-links")
       let crumb2 = document.createElement('a')
       crumb2.classList.add("crumbs", "text-links")
@@ -328,7 +341,7 @@ async function fetchAndDisplaySubhead2Text(url) {
       breadContainer.classList.add("breadcrumbs")
       let crumb1 = document.createElement('a')
       crumb1.innerText = `${subhead2Text.currentBook}`
-      crumb1.href = `/book/${urlArray[0]}`
+      crumb1.href = `/book/${urlArray[0]}/toc`
       crumb1.classList.add("text-links")
       let crumb2 = document.createElement('a')
       crumb2.classList.add("crumbs", "text-links")
@@ -693,6 +706,8 @@ function parseMD(text){
   let md = window.markdownit({html:true}).use(markdownitFootnote)
   let modtext = text.replaceAll('\\n\\n', "\n\n")
   return md.render(modtext)
+  // modtext = text.replaceAll('\\n\\n', "\n\n")
+  // return modtext
 }
 
 function SetUserLoggedInDisplay() {
@@ -755,6 +770,8 @@ function createTOCwithLinks(TOCData){
     chapter.classList.add("chapName", "text-links")
     aTag.appendChild(chapter)
     TOCList.appendChild(aTag)
+    // let chapKids = document.createElement("div")
+    // chapKids.classList.add("tocChapKids")
     chaps.sub1.map(sub1 => {
       let aTag = document.createElement('a');
       aTag.href = `/book/${TOCData.id}/${chaps.id}/${sub1.id}`
@@ -773,13 +790,34 @@ function createTOCwithLinks(TOCData){
         TOCList.appendChild(aTag)
       })
     })
+    // TOCList.appendChild(chapKids)
   })
 
   return TOCList
 }
 
+function activateTocDropDown() {
+  var acc = document.getElementsByClassName("tocDropDownBtn");
+  var kid = document.getElementsByClassName("tocChapKids");
+var i;
+
+for (i = 0; i < acc.length; i++) {
+  acc[i].addEventListener("click", function() {
+    this.classList.toggle("active");
+    var parent = this.parentElement;
+    panel = parent.nextElementSibling
+    if (panel.style.maxHeight) {
+      panel.style.maxHeight = null;
+    } else {
+      panel.style.maxHeight = panel.scrollHeight + "px";
+    } 
+  });
+}
+}
+
 function handleBookmarkDisplayAction(chapTitle, url) {
   let currentParaId = null
+  let currentParaBookMarkContent = null
   let bookmarkBtn = document.getElementById("bookmarkBtn")
   let bookmarkImg = document.createElement("img")
   bookmarkImg.src = '/assets/bookmark.jpg'
@@ -798,7 +836,7 @@ function handleBookmarkDisplayAction(chapTitle, url) {
           "bookmarks":{
             "bookmarkTitle":`${chapTitle}`,
             "url":`${url}#${currentParaId}`,
-            "content": "testing bookmark content"
+            "content": `${currentParaBookMarkContent}`
           },
           "profile":`${localStorage.getItem("profileId")}`
           }),
@@ -817,14 +855,12 @@ function handleBookmarkDisplayAction(chapTitle, url) {
   let pTags = document.getElementsByTagName("p")
       for(let i = 0; i < pTags.length; i++) {
         pTags[i].setAttribute('id', i+1)
-        // let bookmarkBtn = document.createElement("div")
-        // bookmarkBtn.setAttribute("id", "bookmarkBtn")
-        // bookmarkBtn.innerText = "🔖"
-        // pTags[i].appendChild(bookmarkBtn)
+        if (pTags[i].textContent === "* * *") {pTags[i].style.textAlign = "center"}
         pTags[i].addEventListener("mouseover", (e) => {
           if(e.target.localName === 'p'){
             e.target.style.position = 'relative'
             currentParaId = e.target.id
+            currentParaBookMarkContent = e.target.textContent.slice(0, 20)
           }
           pTags[i].prepend(bookmarkBtn)
         })

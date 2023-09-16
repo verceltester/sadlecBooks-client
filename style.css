@@ -44,6 +44,12 @@ p {
   padding: .8rem 1.2rem;
   border-radius: 10px;
   /* position: relative; */
+  scroll-margin-top: 90px;  
+  transition: all .3s ease;
+}
+
+p a {
+  scroll-margin-top: 90px;
 }
 
 h3, h4 {
@@ -69,11 +75,13 @@ h3, h4 {
   padding: 6px;
   box-shadow: var(--bookmarkbtn-boxshadow-color) 0px 0px 20px 0px;
   background: white;
+  transform: translateY(-10px);
 }
 
 /* ------------------------ all p tags bookmark button ----------------*/
 
-p:hover {
+p:hover,
+p.hover {
   background-color: var(--para-hover-color);
 }
 
@@ -273,9 +281,15 @@ header {
   text-align: center;
 }
 
+.book :hover {
+  opacity: 94%;
+}
+
 .book img {
   margin-bottom: 1rem;
   width: 100%;
+  height: 380px;
+  border-radius: 7px;
 }
 
 /*-------------------------------Book details page container-----------------------*/
@@ -300,6 +314,7 @@ header {
 #bookCoverDetails img {
   margin-bottom: 1rem;
   width: 250px;
+  border-radius: 6px;
 }
 
 #bookOtherDetails {
@@ -354,6 +369,48 @@ header {
 }
 
 /*-------------------------------Book text Container -----------------*/
+
+
+/*-------------------------------TOC DropDown styles -----------------*/
+
+.tocDropDownBtn {
+  background-color: #eee;
+  color: #444;
+  cursor: pointer;
+  padding: 18px;
+  width: 100%;
+  border: none;
+  text-align: left;
+  outline: none;
+  font-size: 15px;
+  transition: 0.4s;
+}
+
+.active, .tocDropDownBtn:hover {
+  background-color: #ccc;
+}
+
+.tocDropDownBtn:after {
+  content: '\002B';
+  color: #777;
+  font-weight: bold;
+  float: right;
+  margin-left: 5px;
+}
+
+.active:after {
+  content: "\2212";
+}
+
+.tocChapKids {
+  padding: 0 18px;
+  /* background-color: rgb(86, 85, 85); */
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.2s ease-out;
+}
+
+/*-------------------------------TOC DropDown styles -----------------*/
 
 .text-container {
   padding: 2.5rem;
@@ -541,20 +598,27 @@ form {
   justify-content: space-between;
   gap: 3rem;
   margin-bottom: 1rem;
+  padding: .6rem;
+  align-items: center;
+  border: 1px var(--global-text-color) solid;
+  border-radius: 5px;
 }
 
 .del-bookmark-img {
   width: 25px;
   height: 100%;
   cursor: pointer;
-  align-self: flex-end;
   background-color: white;
   padding: 2px;
   border-radius: 3px;
 }
 
+.bookmark-title div {
+  margin-top: 10px;
+}
+
 .del-bookmark-img:hover {
-  background-color:#888;
+  background-color:rgb(173, 173, 173);
 }
 
 /*---------------------------------- TOC Modal CSS ----------------------------------*/
