@@ -971,8 +971,11 @@ function showloader() {
 }
 
 function getNumFromURL(url) {
-  let numbers = url.replace(/[^0-9]/g, '');
-  return numbers.split('');
+  // let numbers = url.replace(/[^0-9]/g, '');
+  let nums = url.split('/');
+  nums.shift();
+  nums.shift();
+  return nums
 }
 
 function createNextBtn(nextData, bottomNavBtns) {
@@ -1077,7 +1080,7 @@ let fontDecBtn = document.getElementById("decreaseFont")
 fontIncBtn.addEventListener('click', () => {
   let rootStyles = window.getComputedStyle(document.body).getPropertyValue('font-size');
   let fontSize = parseFloat(rootStyles);
-  if(fontSize < 23){
+  if(fontSize < 30){
     document.body.style.fontSize = (fontSize + 1) + 'px';
     localStorage.setItem("fontSize", fontSize+1)
   }

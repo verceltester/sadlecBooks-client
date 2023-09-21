@@ -23,14 +23,14 @@
   
 }
 
-@font-face {
-  font-family: "sabon";
+/* @font-face {
+  font-family: "bookerly";
   src: url("/fonts/sabon.woff");
-}
+} */
 
 body {
   background-color: var(--body-bg-color-theme-light);
-  font-family: 'sabon';
+  font-family: 'adobe devanagari';
   font-size: var(--body-font-size);
 }
 
