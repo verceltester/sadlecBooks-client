@@ -33,13 +33,7 @@ async function fetchAndDisplayBooks() {
     SetUserLoggedInDisplay()
     hideloader();
   } else {
-    const topContainer = document.getElementById('container')
-    let dataContainer = document.createElement('div')
-    dataContainer.classList.add("box-shadow", "error")
-    dataContainer.innerHTML = `Something went wrong. Please refresh the page.`
-    topContainer.appendChild(dataContainer)
-    hideloader();
-    SetUserLoggedInDisplay()
+    somethingWrongMsg()
   }
 }
 
@@ -79,13 +73,7 @@ async function fetchAndDisplayBookDetails(url) {
   SetUserLoggedInDisplay()
   }
     else {
-      const topContainer = document.getElementById('container')
-    let dataContainer = document.createElement('div')
-    dataContainer.classList.add("box-shadow", "error")
-    dataContainer.innerHTML = `Something went wrong. Please refresh the page.`
-    topContainer.appendChild(dataContainer)
-    hideloader();
-    SetUserLoggedInDisplay()
+      somethingWrongMsg()
     }
 }
 
@@ -118,13 +106,7 @@ async function fetchAndDisplayBookTOC(url) {
 
   SetUserLoggedInDisplay()
   } else {
-    const topContainer = document.getElementById('container')
-    let dataContainer = document.createElement('div')
-    dataContainer.classList.add("box-shadow", "error")
-    dataContainer.innerHTML = `Something went wrong. Please refresh the page.`
-    topContainer.appendChild(dataContainer)
-    hideloader();
-    SetUserLoggedInDisplay()
+    somethingWrongMsg()
   }
 
 }
@@ -217,13 +199,7 @@ async function fetchAndDisplayChapterText(url) {
       createTOCModal(urlArray[0])
 
   } else {
-    const topContainer = document.getElementById('container')
-    let dataContainer = document.createElement('div')
-    dataContainer.classList.add("box-shadow", "error")
-    dataContainer.innerHTML = `Something went wrong. Please refresh the page.`
-    topContainer.appendChild(dataContainer)
-    hideloader();
-    SetUserLoggedInDisplay()
+    somethingWrongMsg()
   }
 
 }
@@ -303,13 +279,7 @@ async function fetchAndDisplaySubhead1Text(url) {
       
   createTOCModal(urlArray[0])
   } else {
-    const topContainer = document.getElementById('container')
-    let dataContainer = document.createElement('div')
-    dataContainer.classList.add("box-shadow", "error")
-    dataContainer.innerHTML = `Something went wrong. Please refresh the page.`
-    topContainer.appendChild(dataContainer)
-    hideloader();
-    SetUserLoggedInDisplay()
+    somethingWrongMsg()
   }
 
 }
@@ -393,13 +363,7 @@ async function fetchAndDisplaySubhead2Text(url) {
 
   createTOCModal(urlArray[0])
   } else {
-    const topContainer = document.getElementById('container')
-    let dataContainer = document.createElement('div')
-    dataContainer.classList.add("box-shadow", "error")
-    dataContainer.innerHTML = `Something went wrong. Please refresh the page.`
-    topContainer.appendChild(dataContainer)
-    hideloader();
-    SetUserLoggedInDisplay()
+    somethingWrongMsg()
   }
 
 }
@@ -705,6 +669,7 @@ async function profileSection() {
 function parseMD(text){
   let md = window.markdownit({html:true}).use(markdownitFootnote)
   let modtext = text.replaceAll('\\n\\n', "\n\n")
+  modtext = modtext.replaceAll('\\n', "<br>")
   return md.render(modtext)
   // modtext = text.replaceAll('\\n\\n', "\n\n")
   // return modtext
@@ -986,6 +951,16 @@ function setProgressbarBackToTop() {
     if(scrolled > 8) backToTop.style.display = 'block'
     else backToTop.style.display = 'none'
   }
+}
+
+function somethingWrongMsg() {
+  const topContainer = document.getElementById('container')
+  let dataContainer = document.createElement('div')
+  dataContainer.classList.add("box-shadow", "error")
+  dataContainer.innerHTML = `Something went wrong. Please refresh the page.`
+  topContainer.appendChild(dataContainer)
+  hideloader();
+  SetUserLoggedInDisplay()
 }
 
 function hideloader() {
