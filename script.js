@@ -1,5 +1,5 @@
 // const API_URL = "http://127.0.0.1:8000/api"
-const API_URL = "http://52.66.239.123/api"
+const API_URL = "http://books.resurgentindia.org/api"
 
 async function fetchAndDisplayBooks() {
   let res = await fetch(`${API_URL}/book`)
