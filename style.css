@@ -6,7 +6,7 @@
 }
 
 :root{
-  --body-font-size: 18px;
+  --body-font-size: 20px;
   --bookmarkbtn-boxshadow-color: rgba(232, 232, 232, 0.5);
   --primary-color: #ff5906;
   --global-bg-color: #fff;
@@ -30,7 +30,7 @@
 
 body {
   background-color: var(--body-bg-color-theme-light);
-  font-family: 'adobe devanagari';
+  font-family: 'adDev';
   font-size: var(--body-font-size);
 }
 
@@ -326,6 +326,7 @@ header {
   max-width: 320px;
   width: 100%;
   margin: .5rem;
+  font-size: 20px;
 }
 
 /*-------------------------------TOC Container -----------------*/

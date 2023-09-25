@@ -183,17 +183,12 @@ async function fetchAndDisplayChapterText(url) {
 
       //add bookmark to every p tag
       handleBookmarkDisplayAction(chapText.chapTitle, url)
-      setProgressbarBackToTop() 
+      setProgressbarBackToTop()
 
-      //Scroll into view
       var urlLocation = window.location.toString()
       let checkHref = urlLocation.indexOf('#')
       if(checkHref !== -1){
-        urlLocation = urlLocation.slice(urlLocation.indexOf('#')+1);
-        const element = document.getElementById(urlLocation);
-        element.scrollIntoView();
-        element.classList.add("hover")
-        setTimeout(() => element.classList.remove("hover"), 4000)
+        scrollBookmarkParaInView(urlLocation)
       }
 
       createTOCModal(urlArray[0])
@@ -276,8 +271,14 @@ async function fetchAndDisplaySubhead1Text(url) {
       //add bookmark to every p tag
       handleBookmarkDisplayAction(subhead1Text.subhead1Titles, url)
       setProgressbarBackToTop() 
+
+      var urlLocation = window.location.toString()
+      let checkHref = urlLocation.indexOf('#')
+      if(checkHref !== -1){
+        scrollBookmarkParaInView(urlLocation)
+      }
       
-  createTOCModal(urlArray[0])
+      createTOCModal(urlArray[0])
   } else {
     somethingWrongMsg()
   }
@@ -333,7 +334,7 @@ async function fetchAndDisplaySubhead2Text(url) {
     
       let sub2Title = document.createElement('h1')
       sub2Title.classList.add("toc-book-title")
-      sub2Title.innerText = subhead2Text.subhead2Titles
+      sub2Title.innerText = parseMDTitles(subhead2Text.subhead2Titles)
       textContainer.appendChild(sub2Title)
       
       let textDiv = document.createElement('div')
@@ -361,7 +362,13 @@ async function fetchAndDisplaySubhead2Text(url) {
       handleBookmarkDisplayAction(subhead2Text.subhead2Titles, url)
       setProgressbarBackToTop();
 
-  createTOCModal(urlArray[0])
+      var urlLocation = window.location.toString()
+      let checkHref = urlLocation.indexOf('#')
+      if(checkHref !== -1){
+        scrollBookmarkParaInView(urlLocation)
+      }
+
+      createTOCModal(urlArray[0])
   } else {
     somethingWrongMsg()
   }
@@ -675,6 +682,11 @@ function parseMD(text){
   // return modtext
 }
 
+function parseMDTitles(text){
+  let md = window.markdownit().use(markdownitFootnote)
+  return md.render(text)
+}
+
 function SetUserLoggedInDisplay() {
   let logArea = document.getElementById("navbarUserMenu")
   let loginMenu = document.getElementById("loginMenu")
@@ -728,23 +740,37 @@ function createTOCwithLinks(TOCData){
   const TOCList = document.createDocumentFragment();
   
   TOCData.chap.map((chaps, i) => {
-    let aTag = document.createElement('a');
-    aTag.href = `/book/${TOCData.id}/${chaps.id}`
-    let chapter = document.createElement('h1')
-    chapter.innerText = `Chapter ${i+1}. ${chaps.chapTitle}`
-    chapter.classList.add("chapName", "text-links")
-    aTag.appendChild(chapter)
-    TOCList.appendChild(aTag)
+    // if(!chaps.chapTitle.hastext){
+    //   let chapter = document.createElement('h1')
+    //   chapter.innerText = `${i+1}. ${chaps.chapTitle}`
+    //   chapter.classList.add("chapName")
+    //   TOCList.appendChild(chapter)
+    // } else {
+      let aTag = document.createElement('a');
+      aTag.href = `/book/${TOCData.id}/${chaps.id}`
+      let chapter = document.createElement('h1')
+      chapter.innerText = `${i+1}. ${chaps.chapTitle}`
+      chapter.classList.add("chapName", "text-links")
+      aTag.appendChild(chapter)
+      TOCList.appendChild(aTag)
+    // }    
     // let chapKids = document.createElement("div")
     // chapKids.classList.add("tocChapKids")
     chaps.sub1.map(sub1 => {
-      let aTag = document.createElement('a');
-      aTag.href = `/book/${TOCData.id}/${chaps.id}/${sub1.id}`
-      let subhead1 = document.createElement("h2")
-      subhead1.innerText = sub1.subhead1Titles
-      subhead1.classList.add("sub1Name", "text-links")
-      aTag.appendChild(subhead1)
-      TOCList.appendChild(aTag)
+      // if(!sub1.subhead1Titles.hastext){
+      //   let subhead1 = document.createElement("h2")
+      //   subhead1.innerText = sub1.subhead1Titles
+      //   subhead1.classList.add("sub1Name")
+      //   TOCList.appendChild(subhead1)
+      // } else {
+        let aTag = document.createElement('a');
+        aTag.href = `/book/${TOCData.id}/${chaps.id}/${sub1.id}`
+        let subhead1 = document.createElement("h2")
+        subhead1.innerText = sub1.subhead1Titles
+        subhead1.classList.add("sub1Name", "text-links")
+        aTag.appendChild(subhead1)
+        TOCList.appendChild(aTag)
+      // }
       sub1.sub2.map(sub2name => {
         let aTag = document.createElement('a');
         aTag.href = `/book/${TOCData.id}/${chaps.id}/${sub1.id}/${sub2name.id}`
@@ -977,6 +1003,14 @@ function somethingWrongMsg() {
   topContainer.appendChild(dataContainer)
   hideloader();
   SetUserLoggedInDisplay()
+}
+
+function scrollBookmarkParaInView(urlLocation){
+  urlLocation = urlLocation.slice(urlLocation.indexOf('#')+1);
+  const element = document.getElementById(urlLocation);
+  element.scrollIntoView();
+  element.classList.add("hover")
+  setTimeout(() => element.classList.remove("hover"), 4000)
 }
 
 function hideloader() {
