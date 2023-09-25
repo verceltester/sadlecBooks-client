@@ -845,6 +845,10 @@ form {
     width: 100%;
   }
 
+  form {
+    padding: 0;
+  }
+
   .text-bottom-nav {
     padding: 0 2rem;
   }
@@ -878,5 +882,9 @@ form {
 
   .form-container {
     width: 100%;
+  }
+
+  .modal-content {
+    width: 95%;
   }
 }
