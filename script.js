@@ -90,7 +90,7 @@ async function fetchAndDisplayBookTOC(url) {
   let tocContainer = document.createElement('div')
   tocContainer.classList.add("toc-container")
 
-  let tocTitle = document.createElement('h1')
+  let tocTitle = document.createElement('div')
   tocTitle.classList.add("toc-book-title")
   tocTitle.innerText = bookTOC.bookTitle
   tocContainer.appendChild(tocTitle)
@@ -818,9 +818,25 @@ function handleBookmarkDisplayAction(chapTitle, url) {
   })
   
   let pTags = document.getElementsByTagName("p")
+      let isNextParaComm = false
       for(let i = 0; i < pTags.length; i++) {
         pTags[i].setAttribute('id', i+1)
         if (pTags[i].textContent === "* * *") {pTags[i].style.textAlign = "center"}
+        if (pTags[i].textContent[0] === "‡") {
+          pTags[i].style.marginLeft = "1.6rem"
+          pTags[i].style.marginRight = "1.6rem"
+          let last = pTags[i].textContent.length-1 
+          if(pTags[i].textContent[last] !== "‡") {
+            isNextParaComm = true
+            let j = i + 1;
+            do {
+              pTags[j].style.marginLeft = "1.6rem"
+              pTags[j].style.marginRight = "1.6rem"
+              if(pTags[j].textContent[pTags[j].textContent.length-1] === "‡") isNextParaComm = false
+              j= j + 1
+            } while(isNextParaComm)
+          }
+        }
         pTags[i].addEventListener("mouseover", (e) => {
           if(e.target.localName === 'p'){
             e.target.style.position = 'relative'
