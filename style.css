@@ -8,17 +8,17 @@
 :root{
   --body-font-size: 20px;
   --bookmarkbtn-boxshadow-color: rgba(232, 232, 232, 0.5);
-  --primary-color: #ff5906;
+  --primary-color: #de6843;
   --global-bg-color: #fff;
   --global-text-color: #000;
   --body-bg-color-theme-light: #f9faff;
   --body-bg-color-theme-dark: #000;
-  --header-bg-color-theme-light: #fff;
+  --header-bg-color-theme-light: #E4DED4;
   --header-bg-color-theme-dark: #000;
   --header-shadow-theme-light: 0 0 15px #0000001a;
   --header-shadow-theme-dark: 0 0 15px #fff;
-  --link-btn-hover-color: #fd700b;
-  --para-hover-color: rgb(232, 232, 232);
+  --link-btn-hover-color: #b73c1d;
+  --para-hover-color: rgba(224, 215, 200, 0.35);
   --breadcrumbs-boxshadow-color: #0000003b;
   
 }
@@ -442,8 +442,9 @@ header {
  line-height: 2rem;
  box-shadow: 0 0 5px var(--breadcrumbs-boxshadow-color);
  padding: 10px;
- padding-bottom: 0;
+ padding-bottom: 1;
  border-radius: 10px;
+ background-color: rgba(224, 215, 200, 0.35);
 }
 
 .breadcrumbs a {
