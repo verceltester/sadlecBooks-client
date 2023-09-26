@@ -13,12 +13,12 @@
   --global-text-color: #000;
   --body-bg-color-theme-light: #f9faff;
   --body-bg-color-theme-dark: #000;
-  --header-bg-color-theme-light: #E4DED4;
+  --header-bg-color-theme-light: rgb(228, 222, 212);
   --header-bg-color-theme-dark: #000;
   --header-shadow-theme-light: 0 0 15px #0000001a;
   --header-shadow-theme-dark: 0 0 15px #fff;
   --link-btn-hover-color: #b73c1d;
-  --para-hover-color: rgba(224, 215, 200, 0.35);
+  --para-hover-color: rgba(228, 222, 212, 0.5);
   --breadcrumbs-boxshadow-color: #0000003b;
   
 }
@@ -336,7 +336,7 @@ header {
 }
 
 .toc-container h1{
-  font-size: 1.8rem;
+  font-size: 1.6rem;
 }
 .toc-container h2{
   font-size: 1.5rem;
@@ -344,7 +344,8 @@ header {
 
 .toc-book-title {
   font-size: 2.4rem;
-  margin-bottom: 3rem;
+  margin-bottom: 1rem;
+  margin-top: 4rem;
   text-align: center;
   font-weight: bold;
   color: var(--primary-color);
@@ -445,7 +446,7 @@ header {
  padding: 10px;
  padding-bottom: 0;
  border-radius: 10px;
- background-color: rgba(224, 215, 200, 0.35);
+ background-color:  rgba(228, 222, 212, 0.5);
 }
 
 .breadcrumbs a {
