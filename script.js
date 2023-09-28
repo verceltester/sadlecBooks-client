@@ -102,7 +102,7 @@ async function fetchAndDisplayBookTOC(url) {
   topContainer.appendChild(shadowBox)
   hideloader();
 
-  // activateTocDropDown()
+  activateTocDropDown()
 
   SetUserLoggedInDisplay()
   } else {
@@ -151,7 +151,7 @@ async function fetchAndDisplayChapterText(url) {
       breadContainer.appendChild(crumb1)
       breadContainer.appendChild(crumb2)
 
-      textContainer.appendChild(breadContainer)
+      shadowBox.appendChild(breadContainer)
     
       let bookTitle = document.createElement('h1')
       bookTitle.classList.add("toc-book-title")
@@ -159,7 +159,7 @@ async function fetchAndDisplayChapterText(url) {
       textContainer.appendChild(bookTitle)
       
       let textDiv = document.createElement('div')
-      textDiv.innerHTML = chapText.chapText === null ? "No text" : parseMD(chapText.chapText)
+      textDiv.innerHTML = chapText.hastext ? parseMD(chapText.chapText) : "No text"
 
       textContainer.appendChild(textDiv)
 
@@ -239,7 +239,7 @@ async function fetchAndDisplaySubhead1Text(url) {
       breadContainer.appendChild(crumb2)
       breadContainer.appendChild(crumb3)
 
-      textContainer.appendChild(breadContainer)
+      shadowBox.appendChild(breadContainer)
     
       let sub1Title = document.createElement('h1')
       sub1Title.classList.add("toc-book-title")
@@ -247,7 +247,7 @@ async function fetchAndDisplaySubhead1Text(url) {
       textContainer.appendChild(sub1Title)
       
       let textDiv = document.createElement('div')
-      textDiv.innerHTML = subhead1Text.subhead1Text === "" ? "No text" : parseMD(subhead1Text.subhead1Text)
+      textDiv.innerHTML = subhead1Text.hastext ? parseMD(subhead1Text.subhead1Text) : "No text"
 
       textContainer.appendChild(textDiv)
 
@@ -330,15 +330,15 @@ async function fetchAndDisplaySubhead2Text(url) {
       breadContainer.appendChild(crumb3)
       breadContainer.appendChild(crumb4)
 
-      textContainer.appendChild(breadContainer)
+      shadowBox.appendChild(breadContainer)
     
       let sub2Title = document.createElement('h1')
       sub2Title.classList.add("toc-book-title")
-      sub2Title.innerText = parseMDTitles(subhead2Text.subhead2Titles)
+      sub2Title.innerText = subhead2Text.subhead2Titles
       textContainer.appendChild(sub2Title)
       
       let textDiv = document.createElement('div')
-      textDiv.innerHTML = subhead2Text.subhead2Text === "" ? "No text" : parseMD(subhead2Text.subhead2Text)
+      textDiv.innerHTML = subhead2Text.hastext ? parseMD(subhead2Text.subhead2Text) : "No text" 
 
       textContainer.appendChild(textDiv)
 
@@ -368,7 +368,8 @@ async function fetchAndDisplaySubhead2Text(url) {
         scrollBookmarkParaInView(urlLocation)
       }
 
-      createTOCModal(urlArray[0])
+        createTOCModal(urlArray[0])
+      
   } else {
     somethingWrongMsg()
   }
@@ -561,16 +562,16 @@ async function profileSection() {
     let profileDetails = document.createElement('div')
     profileDetails.setAttribute("id", "profile-details")
 
-    let emailDiv = document.createElement('div')
-    emailDiv.setAttribute("id", "profile-email")
-    emailDiv.innerHTML = `<strong>Email:</strong> ${profileData.email}`
-    profileDetails.appendChild(emailDiv)
-
     let profileImage = document.createElement('div')
     profileImage.setAttribute("id", "profile-img")
 
-    profileImage.innerHTML = `<strong>Profile image:</strong> <img style="width:43px" src="/assets/defaultAvatar.png"></img>`
+    profileImage.innerHTML = `<img style="width:150px" src="/assets/defaultAvatar.png"></img>`
     profileDetails.appendChild(profileImage)
+
+    let emailDiv = document.createElement('div')
+    emailDiv.setAttribute("id", "profile-email")
+    emailDiv.innerHTML = `${profileData.email}`
+    profileDetails.appendChild(emailDiv)
 
     // let upload = document.createElement('div')
     // upload.innerHTML = `<input type="file" id="file">
@@ -578,18 +579,20 @@ async function profileSection() {
     //     <small id="status"></small>`
     // profileImage.appendChild(upload)
 
-    let bookmarks = document.createElement('div')
-    bookmarks.setAttribute("id", "bookmarks")
     let sectionTitle = document.createElement('h3')
     sectionTitle.innerText = "Your bookmarks :"
-    bookmarks.appendChild(sectionTitle)
+    profileDetails.appendChild(sectionTitle)
+
+    let bookmarks = document.createElement('div')
+    bookmarks.setAttribute("id", "bookmarks")
+    
     profileData.profile.mybookmark.map((bookm, i) => {
       let bookmarkDiv = document.createElement('div')
       bookmarkDiv.classList.add('indi-bookmark')
       bookmarkDiv.innerHTML = `<div class="bookmark-title">
-                                <a class="text-links" href="${bookm.bookmarks.url}">${i+1}. 🔗${bookm.bookmarks.bookmarkTitle}
+                                <a class="text-links" href="${bookm.bookmarks.url}">${i+1}. 🔗<strong>${bookm.bookmarks.bookmarkTitle}</strong>
                                 <div>(${bookm.bookmarks.content}...)</div></a></div>
-                                <img id="${bookm.id}" class="del-bookmark-img" src="/assets/bin.png"></img>`
+                                <button id="${bookm.id}" class="del-bookmark-img">Delete</button>`
       bookmarks.appendChild(bookmarkDiv)
     })
     profileDetails.appendChild(bookmarks)
@@ -682,11 +685,6 @@ function parseMD(text){
   // return modtext
 }
 
-function parseMDTitles(text){
-  let md = window.markdownit().use(markdownitFootnote)
-  return md.render(text)
-}
-
 function SetUserLoggedInDisplay() {
   let logArea = document.getElementById("navbarUserMenu")
   let loginMenu = document.getElementById("loginMenu")
@@ -740,37 +738,58 @@ function createTOCwithLinks(TOCData){
   const TOCList = document.createDocumentFragment();
   
   TOCData.chap.map((chaps, i) => {
-    // if(!chaps.chapTitle.hastext){
-    //   let chapter = document.createElement('h1')
-    //   chapter.innerText = `${i+1}. ${chaps.chapTitle}`
-    //   chapter.classList.add("chapName")
-    //   TOCList.appendChild(chapter)
-    // } else {
+    if(!chaps.hastext){
+      let chapter = document.createElement('div')      
+      chapter.classList.add("chapName")
+      let chapTitleText = document.createElement("h1")
+      chapTitleText.innerText = `${i+1}. ${chaps.chapTitle}`
+      if(chaps.sub1.length !== 0) {     
+        let caretImg = document.createElement("img")
+        caretImg.src = '/assets/caret.png'
+        caretImg.classList.add("tocDropDownBtn")
+        chapter.appendChild(caretImg)
+      } else {
+        chapTitleText.style.paddingLeft = "28px"
+      }
+      chapter.appendChild(chapTitleText)
+      TOCList.appendChild(chapter)
+    } else {
+      let chapter = document.createElement('div')      
+      chapter.classList.add("chapName")
       let aTag = document.createElement('a');
       aTag.href = `/book/${TOCData.id}/${chaps.id}`
-      let chapter = document.createElement('h1')
-      chapter.innerText = `${i+1}. ${chaps.chapTitle}`
-      chapter.classList.add("chapName", "text-links")
-      aTag.appendChild(chapter)
-      TOCList.appendChild(aTag)
-    // }    
-    // let chapKids = document.createElement("div")
-    // chapKids.classList.add("tocChapKids")
+      let chapTitleText = document.createElement('h1')
+      chapTitleText.innerText = `${i+1}. ${chaps.chapTitle}`
+      chapTitleText.classList.add("text-links")
+      aTag.appendChild(chapTitleText)
+      if(chaps.sub1.length !== 0) {        
+        let caretImg = document.createElement("img")
+        caretImg.src = '/assets/caret.png'
+        caretImg.classList.add("tocDropDownBtn")
+        chapter.appendChild(caretImg)
+      } else {
+        chapTitleText.style.paddingLeft = "28px"
+      }
+      chapter.appendChild(aTag)
+      TOCList.appendChild(chapter)
+    }    
+    let chapKids = document.createElement("div")
+    chapKids.classList.add("tocChapKids")
     chaps.sub1.map(sub1 => {
-      // if(!sub1.subhead1Titles.hastext){
-      //   let subhead1 = document.createElement("h2")
-      //   subhead1.innerText = sub1.subhead1Titles
-      //   subhead1.classList.add("sub1Name")
-      //   TOCList.appendChild(subhead1)
-      // } else {
+      if(!sub1.hastext){
+        let subhead1 = document.createElement("h2")
+        subhead1.innerText = sub1.subhead1Titles
+        subhead1.classList.add("sub1Name")
+        chapKids.appendChild(subhead1)
+      } else {
         let aTag = document.createElement('a');
         aTag.href = `/book/${TOCData.id}/${chaps.id}/${sub1.id}`
         let subhead1 = document.createElement("h2")
         subhead1.innerText = sub1.subhead1Titles
         subhead1.classList.add("sub1Name", "text-links")
         aTag.appendChild(subhead1)
-        TOCList.appendChild(aTag)
-      // }
+        chapKids.appendChild(aTag)
+      }
       sub1.sub2.map(sub2name => {
         let aTag = document.createElement('a');
         aTag.href = `/book/${TOCData.id}/${chaps.id}/${sub1.id}/${sub2name.id}`
@@ -778,10 +797,10 @@ function createTOCwithLinks(TOCData){
         subhead2.innerText = sub2name.subhead2Titles
         subhead2.classList.add("sub2Name", "text-links")
         aTag.appendChild(subhead2)
-        TOCList.appendChild(aTag)
+        chapKids.appendChild(aTag)
       })
     })
-    // TOCList.appendChild(chapKids)
+    TOCList.appendChild(chapKids)
   })
 
   return TOCList
@@ -789,21 +808,19 @@ function createTOCwithLinks(TOCData){
 
 function activateTocDropDown() {
   var acc = document.getElementsByClassName("tocDropDownBtn");
-  var kid = document.getElementsByClassName("tocChapKids");
-var i;
 
-for (i = 0; i < acc.length; i++) {
-  acc[i].addEventListener("click", function() {
-    this.classList.toggle("active");
-    var parent = this.parentElement;
-    panel = parent.nextElementSibling
-    if (panel.style.maxHeight) {
-      panel.style.maxHeight = null;
-    } else {
-      panel.style.maxHeight = panel.scrollHeight + "px";
-    } 
-  });
-}
+  for (let i = 0; i < acc.length; i++) {
+    acc[i].addEventListener("click", function() {
+      this.classList.toggle("rotate");
+      let parent = this.parentElement;
+      let panel = parent.nextElementSibling
+      if (panel.style.maxHeight) {
+        panel.style.maxHeight = null;
+      } else {
+        panel.style.maxHeight = panel.scrollHeight + "px";
+      } 
+    });
+  }
 }
 
 function handleBookmarkDisplayAction(chapTitle, url) {
@@ -851,16 +868,20 @@ function handleBookmarkDisplayAction(chapTitle, url) {
         if (pTags[i].textContent[0] === "‡") {
           pTags[i].style.marginLeft = "1.6rem"
           pTags[i].style.marginRight = "1.6rem"
-          let last = pTags[i].textContent.length-1 
-          if(pTags[i].textContent[last] !== "‡") {
-            isNextParaComm = true
-            let j = i + 1;
-            do {
-              pTags[j].style.marginLeft = "1.6rem"
-              pTags[j].style.marginRight = "1.6rem"
-              if(pTags[j].textContent[pTags[j].textContent.length-1] === "‡") isNextParaComm = false
-              j= j + 1
-            } while(isNextParaComm)
+          let last = pTags[i].textContent.length-1
+          try {
+            if(pTags[i].textContent[last] !== "‡") {
+              isNextParaComm = true
+              let j = i + 1;
+              do {
+                pTags[j].style.marginLeft = "1.6rem"
+                pTags[j].style.marginRight = "1.6rem"
+                if(pTags[j].textContent[pTags[j].textContent.length-1] === "‡") isNextParaComm = false
+                j= j + 1
+              } while(isNextParaComm)
+            }
+          } catch (error) {
+            
           }
         }
         pTags[i].addEventListener("mouseover", (e) => {
@@ -887,14 +908,20 @@ function createTOCModal(bookNumber) {
 
   tocModal.addEventListener('click', async () => {
     modalView.style.display = 'block'
-    showloader()
+    if(tocModalcreated === false){
+      showloader()
 
-    let res = await fetch(`${API_URL}/book/${bookNumber}/toc`)
-    let bookTOC = await res.json()
+      let res = await fetch(`${API_URL}/book/${bookNumber}/toc`)
+      let bookTOC = await res.json()
 
-    let TOCList = createTOCwithLinks(bookTOC)
-    modalContent.appendChild(TOCList)
-    hideloader()
+      let TOCList = createTOCwithLinks(bookTOC)
+      modalContent.appendChild(TOCList)
+      hideloader()
+
+      activateTocDropDown()
+      
+      tocModalcreated = true
+    }
   })
 
   closeBtn.onclick = function() {
@@ -1075,18 +1102,21 @@ else {
   SetUserLoggedInDisplay()
 }
 
-let darkModeBtn = document.getElementById("darkModeBtn")
-
-darkModeBtn.addEventListener('click', (e) => {
-  e.target.innerText === "☀" ? disableDarkMode() : enableDarkMode()
-})
+//global variable for tocModal cheking
+let tocModalcreated = false
 
 let darkModeEnabled = localStorage.getItem("darkMode")
 if(darkModeEnabled === "enabled") { enableDarkMode(); }
 
+const checkbox = document.getElementById("darkModecheckbox")
+checkbox.addEventListener("change", () => {
+  darkModeEnabled === "enabled" ? disableDarkMode() : enableDarkMode()
+  darkModeEnabled = localStorage.getItem("darkMode")
+})
+
+
 function enableDarkMode() {
   localStorage.setItem("darkMode", "enabled")
-  darkModeBtn.innerText = "☀"
   let root = document.querySelector(':root');
   root.style.setProperty("--body-bg-color-theme-light", "#393939")
   root.style.setProperty("--header-bg-color-theme-light", "#555")
@@ -1094,20 +1124,21 @@ function enableDarkMode() {
   root.style.setProperty("--global-text-color", "#fff")
   root.style.setProperty("--para-hover-color", "rgb(72, 71, 71)")
   root.style.setProperty("--breadcrumbs-boxshadow-color", "#f7f5f530")
-  root.style.setProperty("--bookmarkbtn-boxshadow-color", "rgba(232, 232, 232, 0.5)")
+  root.style.setProperty("--bookmarkbtn-boxshadow-color", "rgba(232, 232, 232, 0.5)")  
+  root.style.setProperty("--breadcrumbs-last-crumb-color", "#c4c4c4")
 }
 
 function disableDarkMode() {
   localStorage.setItem("darkMode", "disabled")
-  darkModeBtn.innerText = "☽"
   let root = document.querySelector(':root');
   root.style.setProperty("--body-bg-color-theme-light", "#f9faff")
-  root.style.setProperty("--header-bg-color-theme-light", "#fff")
+  root.style.setProperty("--header-bg-color-theme-light", "rgb(228, 222, 212)")
   root.style.setProperty("--global-bg-color", "#fff")
   root.style.setProperty("--global-text-color", "#000")
   root.style.setProperty("--para-hover-color", "rgb(232, 232, 232)")
   root.style.setProperty("--breadcrumbs-boxshadow-color", "#0000003b")
   root.style.setProperty("--bookmarkbtn-boxshadow-color", "rgba(117, 116, 116, 0.5)")
+  root.style.setProperty("--breadcrumbs-last-crumb-color", "gray")
 }
 
 let burger = document.querySelector(".burger")

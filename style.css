@@ -14,12 +14,12 @@
   --body-bg-color-theme-light: #f9faff;
   --body-bg-color-theme-dark: #000;
   --header-bg-color-theme-light: rgb(228, 222, 212);
-  --header-bg-color-theme-dark: #000;
   --header-shadow-theme-light: 0 0 15px #0000001a;
   --header-shadow-theme-dark: 0 0 15px #fff;
-  --link-btn-hover-color: #b73c1d;
+  --link-btn-hover-color: #de6843;
   --para-hover-color: rgba(228, 222, 212, 0.5);
   --breadcrumbs-boxshadow-color: #0000003b;
+  --breadcrumbs-last-crumb-color: gray;
   
 }
 
@@ -55,6 +55,12 @@ p a {
 
 h3, h4 {
   margin-top: 2rem;
+}
+
+hr {
+  color: rgb(224, 224, 224);
+  margin: auto;
+  width: 100%;
 }
 
 .hiddenClass {
@@ -97,6 +103,7 @@ p.hover {
   border-radius: 24px;
   background-color: var(--global-bg-color);
   color: var(--global-text-color);
+  margin-top: 45px;
 }
 
 .text-links {
@@ -112,7 +119,7 @@ p.hover {
 
 .link-btn {
   text-decoration: none;
-  background-color: var(--primary-color);
+  background-color: #b73c1d;
   color: #fff;
   border-radius: 5px;
   padding: .8rem 2rem;
@@ -167,9 +174,45 @@ header {
   width: 43px;
 }
 
-#darkModeBtn {
-  font-size: 26px;
-  transform: rotate(43deg);
+#darkModecheckbox {
+  opacity: 0;
+  position: absolute;
+}
+
+#darkModeCheckbox-label {
+  background-color: #111;
+  width: 47px;
+  height: 22px;
+  border-radius: 50px;
+  position: relative;
+  padding: 5px;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+#moon {
+  width: 14px;
+}
+
+#sun {
+  width: 16px;
+}
+
+#darkModeCheckbox-label #ball {
+  background-color: #fff;
+  width: 20px;
+  height: 20px;
+  position: absolute;
+  left: 2px;
+  top: .5px;
+  border-radius: 50%;
+  transition: transform 0.2s linear;
+}
+
+#darkModecheckbox:checked + #darkModeCheckbox-label #ball {
+  transform: translateX(24px);
 }
 
 /*------------------------login area and menu -----------------------*/
@@ -272,13 +315,14 @@ header {
   flex: 1 1 auto;
   flex-wrap: wrap;
   padding: 2rem;
-  gap: 3rem;
+  padding-top: 3rem;
+  gap: 2rem;
   align-content: center;
   justify-content: center;
 }
 
 .book {
-  width: 250px;
+  width: 200px;
   text-align: center;
 }
 
@@ -289,7 +333,7 @@ header {
 .book img {
   margin-bottom: 1rem;
   width: 100%;
-  height: 380px;
+  height: 310px;
   border-radius: 7px;
 }
 
@@ -302,13 +346,14 @@ header {
 #book-details {
   display: flex;
   gap: 4rem;
+  padding-top: 3rem;
 }
 
 #bookCoverDetails {
   display: flex;
   flex-direction: column;
   align-items: center;
-  
+  padding-left: 1rem;
   flex: 1 1 auto;
 }
 
@@ -345,31 +390,35 @@ header {
 .toc-book-title {
   font-size: 2.4rem;
   margin-bottom: 1rem;
-  margin-top: 4rem;
   text-align: center;
   font-weight: bold;
   color: var(--primary-color);
 }
 
 .chapName {
-  text-decoration: none;
-  text-align: left;
-  text-decoration: none;
-  margin-bottom: 1.2rem;
-  margin-top: 2rem;
+  display: flex;
+  align-items: center;
+  margin-bottom: .5rem;
+  margin-top: .5rem;
   font-size: 1.5rem;
+  background-color: var(--header-bg-color-theme-light);
+  color: var(--global-text-color);
+  padding: 8px 18px;
+  border-radius: 5px;
 }
 
 .sub1Name {
-  margin-left: 2rem;
+  margin-left: 3rem;
   margin-bottom: 15px;
+  color: var(--global-text-color);
 }
 
 .sub2Name {
-  margin-left: 4rem;
+  margin-left: 5rem;
   margin-bottom: 15px;
   font-size: 1.3rem;
   font-weight: normal;
+  color: var(--global-text-color);
 }
 
 /*-------------------------------Book text Container -----------------*/
@@ -378,52 +427,41 @@ header {
 /*-------------------------------TOC DropDown styles -----------------*/
 
 .tocDropDownBtn {
-  background-color: #eee;
-  color: #444;
+  min-width: 20px;
+  height: 20px;
+  margin-right: 10px;
   cursor: pointer;
-  padding: 18px;
-  width: 100%;
-  border: none;
-  text-align: left;
-  outline: none;
-  font-size: 15px;
-  transition: 0.4s;
+  transition: all 0.1s ease-in;
 }
 
-.active, .tocDropDownBtn:hover {
-  background-color: #ccc;
-}
-
-.tocDropDownBtn:after {
-  content: '\002B';
-  color: #777;
-  font-weight: bold;
-  float: right;
-  margin-left: 5px;
-}
-
-.active:after {
-  content: "\2212";
+.tocDropDownBtn.rotate {
+  transform: rotate(45deg);
+  transform-origin: center 10px;
 }
 
 .tocChapKids {
   padding: 0 18px;
-  /* background-color: rgb(86, 85, 85); */
   max-height: 0;
   overflow: hidden;
-  transition: max-height 0.2s ease-out;
+  transition: max-height 0.3s ease-in;
 }
 
 /*-------------------------------TOC DropDown styles -----------------*/
 
 .text-container {
-  padding: 2.5rem;
+  padding: 0rem 2.5rem 2.5rem 2.5rem;
 }
 
 .text-bottom-nav {
   margin-top: 2rem;
   display: flex;
   justify-content: space-between;
+}
+
+.footnotes-sep {
+  margin-top: 15px;
+  margin: auto;
+  width: 96%;
 }
 
 .nextBtn, .prevBtn{
@@ -445,7 +483,8 @@ header {
  box-shadow: 0 0 5px var(--breadcrumbs-boxshadow-color);
  padding: 10px;
  padding-bottom: 0;
- border-radius: 10px;
+ border-top-left-radius: 20px;
+ border-top-right-radius: 20px;
  background-color:  rgba(228, 222, 212, 0.5);
 }
 
@@ -461,6 +500,10 @@ header {
   font-weight: 1000;
   margin: 0 20px;
   padding-bottom: 4px;
+}
+
+.crumbs:last-child {
+  color: var(--breadcrumbs-last-crumb-color);
 }
 
 .breadcrumbs div {
@@ -534,7 +577,7 @@ form {
 }
 .form-container input:focus {
   outline: none;
-  border: 2px solid #ff5906;
+  border: 2px solid var(--primary-color);
 }
 
 .form-container button {
@@ -570,7 +613,12 @@ form {
 #profile-img {
   display: flex;
   align-items: center;
-  gap: 2rem;
+  justify-content: center;
+}
+
+#profile-email {
+  text-align: center;
+  font-size: 2rem;
 }
 
 /* input[type=file]::file-selector-button{
@@ -595,6 +643,11 @@ form {
   cursor: pointer;
 } */
 
+#bookmarks {
+  border: 1px var(--global-text-color) solid;
+  border-radius: 10px;
+}
+
 #bookmarks h3 {
   margin-bottom: 1rem;
 }
@@ -603,28 +656,32 @@ form {
   display: flex;
   justify-content: space-between;
   gap: 3rem;
-  margin-bottom: 1rem;
   padding: .6rem;
   align-items: center;
-  border: 1px var(--global-text-color) solid;
-  border-radius: 5px;
+  border-bottom: 1px solid gray;
+}
+
+.indi-bookmark:last-child {
+  border: none;
 }
 
 .del-bookmark-img {
-  width: 25px;
+  /* width: 25px; */
   height: 100%;
   cursor: pointer;
-  background-color: white;
-  padding: 2px;
+  background-color: #b73c1d;
+  color: white;
+  border: none;
+  padding: 8px 13px;
   border-radius: 3px;
+}
+
+.del-bookmark-img:hover {
+  background-color: var(--link-btn-hover-color);
 }
 
 .bookmark-title div {
   margin-top: 10px;
-}
-
-.del-bookmark-img:hover {
-  background-color:rgb(173, 173, 173);
 }
 
 /*---------------------------------- TOC Modal CSS ----------------------------------*/
@@ -649,13 +706,20 @@ form {
   width: 100%;
   height: 100%;
   background-color: rgb(0,0,0);
-  background-color: rgba(0,0,0,0.4); 
-    
+  background-color: rgba(113, 112, 112, 0.3); 
+}
+
+#modal-text {
+  margin-top: 25px;
 }
 
 #modal-text a {
   text-decoration: none;
   color: var(--global-text-color);
+}
+
+#modal-text h1 {
+  font-size: 1.8rem;
 }
 
 #modal-text a:hover {
@@ -665,7 +729,7 @@ form {
 .modal-content {
   position: relative;
   background-color: var(--global-bg-color);
-  border-radius: 5px;
+  border-radius: 8px;
   font-size: 14px;
   margin: 5% auto;
   padding: 2rem;
@@ -674,7 +738,8 @@ form {
   top: 5vh;
   height: 80vh;
   overflow-y: auto;
-  transition: all;
+  transition: all .2s ease-in;
+  box-shadow: var(--bookmarkbtn-boxshadow-color) 0px 0px 20px 0px;
   animation-name: animatetop;
   animation-duration: 0.4s;
   -webkit-animation-name: animatetop;
@@ -811,6 +876,7 @@ form {
 
   .text-container {
     padding: 0rem 0rem 2.5rem 0rem;
+    /* padding-top: 0rem; */
   }
 
   .text-container p {
