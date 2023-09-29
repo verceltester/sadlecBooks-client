@@ -50,16 +50,15 @@ async function fetchAndDisplayBookDetails(url) {
 
   let detailsContainer = document.createElement('div')
   detailsContainer.setAttribute("id", "details-container")
-  detailsContainer.innerHTML = `<h1 class="toc-book-title">${bookDetails.bookTitle}</h1>
-                                <div id="book-details">
-                                  <div id="bookCoverDetails">
+  detailsContainer.innerHTML = `<div id="book-details">
+                                  <div style="position:sticky; top: 0" id="bookCoverDetails">
                                     <img src="${bookDetails.imagelink}"></img>
                                     <a class="link-btn bookDetailsBtn" href="/book/${bookDetails.id}/toc">Read Book</a>
                                     <a class="link-btn bookDetailsBtn" href="https://www.aurokart.com" target="_blank">Buy Physical Copy</a>
                                   </div>
                                   <div id="bookOtherDetails">
-                                    <div><strong>Author</strong>: ${bookDetails.bookAuthor}</div>
-                                    <div><strong>Price</strong>: Rs.${bookDetails.bookPrice}</div>                                  
+                                    <h1>${bookDetails.bookTitle}</h1>
+                                    <div><strong>Author</strong>: ${bookDetails.bookAuthor}</div>                                 
                                     <div>${bookDetails.otherinfo}</div>                                  
                                   </div>
                                 </div>`
@@ -94,6 +93,10 @@ async function fetchAndDisplayBookTOC(url) {
   tocTitle.classList.add("toc-book-title")
   tocTitle.innerText = bookTOC.bookTitle
   tocContainer.appendChild(tocTitle)
+  let contentText = document.createElement("p")
+  contentText.setAttribute("id", "tocContentText")
+  contentText.innerText = "Contents"
+  tocContainer.appendChild(contentText)
 
   let TOCList = createTOCwithLinks(bookTOC)
   
@@ -159,7 +162,7 @@ async function fetchAndDisplayChapterText(url) {
       textContainer.appendChild(bookTitle)
       
       let textDiv = document.createElement('div')
-      textDiv.innerHTML = chapText.hastext ? parseMD(chapText.chapText) : "No text"
+      textDiv.innerHTML = chapText.hastext ? parseMD(chapText.chapText) : "This title does not contain any text. Please click next to read next title."
 
       textContainer.appendChild(textDiv)
 
@@ -183,7 +186,7 @@ async function fetchAndDisplayChapterText(url) {
 
       //add bookmark to every p tag
       handleBookmarkDisplayAction(chapText.chapTitle, url)
-      setProgressbarBackToTop()
+      setReadingProgessBar()
 
       var urlLocation = window.location.toString()
       let checkHref = urlLocation.indexOf('#')
@@ -247,7 +250,7 @@ async function fetchAndDisplaySubhead1Text(url) {
       textContainer.appendChild(sub1Title)
       
       let textDiv = document.createElement('div')
-      textDiv.innerHTML = subhead1Text.hastext ? parseMD(subhead1Text.subhead1Text) : "No text"
+      textDiv.innerHTML = subhead1Text.hastext ? parseMD(subhead1Text.subhead1Text) : "This title does not contain any text. Please click next to read next title."
 
       textContainer.appendChild(textDiv)
 
@@ -270,7 +273,7 @@ async function fetchAndDisplaySubhead1Text(url) {
 
       //add bookmark to every p tag
       handleBookmarkDisplayAction(subhead1Text.subhead1Titles, url)
-      setProgressbarBackToTop() 
+      setReadingProgessBar() 
 
       var urlLocation = window.location.toString()
       let checkHref = urlLocation.indexOf('#')
@@ -338,7 +341,7 @@ async function fetchAndDisplaySubhead2Text(url) {
       textContainer.appendChild(sub2Title)
       
       let textDiv = document.createElement('div')
-      textDiv.innerHTML = subhead2Text.hastext ? parseMD(subhead2Text.subhead2Text) : "No text" 
+      textDiv.innerHTML = subhead2Text.hastext ? parseMD(subhead2Text.subhead2Text) : "This title does not contain any text. Please click next to read next title." 
 
       textContainer.appendChild(textDiv)
 
@@ -360,7 +363,7 @@ async function fetchAndDisplaySubhead2Text(url) {
       SetUserLoggedInDisplay()
 
       handleBookmarkDisplayAction(subhead2Text.subhead2Titles, url)
-      setProgressbarBackToTop();
+      setReadingProgessBar();
 
       var urlLocation = window.location.toString()
       let checkHref = urlLocation.indexOf('#')
@@ -737,44 +740,42 @@ function createTOCwithLinks(TOCData){
   
   const TOCList = document.createDocumentFragment();
   
-  TOCData.chap.map((chaps, i) => {
+  TOCData.chap.map((chaps, i) => {        
+    let chapKids = document.createElement("div")
+    chapKids.classList.add("tocChapKids")
     if(!chaps.hastext){
       let chapter = document.createElement('div')      
       chapter.classList.add("chapName")
-      let chapTitleText = document.createElement("h1")
-      chapTitleText.innerText = `${i+1}. ${chaps.chapTitle}`
-      if(chaps.sub1.length !== 0) {     
+      let dropDownText = document.createElement("h1")
+      dropDownText.innerText = `Chapter ${i+1}`
         let caretImg = document.createElement("img")
         caretImg.src = '/assets/caret.png'
         caretImg.classList.add("tocDropDownBtn")
         chapter.appendChild(caretImg)
-      } else {
-        chapTitleText.style.paddingLeft = "28px"
-      }
-      chapter.appendChild(chapTitleText)
+      chapter.appendChild(dropDownText)
       TOCList.appendChild(chapter)
+      let chapTitleText = document.createElement("h1")
+      chapTitleText.innerText = `${i+1}. ${chaps.chapTitle}`
+      chapKids.appendChild(chapTitleText)
     } else {
       let chapter = document.createElement('div')      
       chapter.classList.add("chapName")
+      let dropDownText = document.createElement("h1")
+      dropDownText.innerText = `Chapter ${i+1}`     
+        let caretImg = document.createElement("img")
+        caretImg.src = '/assets/caret.png'
+        caretImg.classList.add("tocDropDownBtn")
+        chapter.appendChild(caretImg)
+      chapter.appendChild(dropDownText)
+      TOCList.appendChild(chapter)
       let aTag = document.createElement('a');
       aTag.href = `/book/${TOCData.id}/${chaps.id}`
       let chapTitleText = document.createElement('h1')
       chapTitleText.innerText = `${i+1}. ${chaps.chapTitle}`
       chapTitleText.classList.add("text-links")
       aTag.appendChild(chapTitleText)
-      if(chaps.sub1.length !== 0) {        
-        let caretImg = document.createElement("img")
-        caretImg.src = '/assets/caret.png'
-        caretImg.classList.add("tocDropDownBtn")
-        chapter.appendChild(caretImg)
-      } else {
-        chapTitleText.style.paddingLeft = "28px"
-      }
-      chapter.appendChild(aTag)
-      TOCList.appendChild(chapter)
-    }    
-    let chapKids = document.createElement("div")
-    chapKids.classList.add("tocChapKids")
+      chapKids.appendChild(aTag)
+    }
     chaps.sub1.map(sub1 => {
       if(!sub1.hastext){
         let subhead1 = document.createElement("h2")
@@ -807,13 +808,12 @@ function createTOCwithLinks(TOCData){
 }
 
 function activateTocDropDown() {
-  var acc = document.getElementsByClassName("tocDropDownBtn");
+  var chap = document.getElementsByClassName("chapName");
 
-  for (let i = 0; i < acc.length; i++) {
-    acc[i].addEventListener("click", function() {
-      this.classList.toggle("rotate");
-      let parent = this.parentElement;
-      let panel = parent.nextElementSibling
+  for (let i = 0; i < chap.length; i++) {
+    chap[i].addEventListener("click", function() {
+      this.children[0].classList.toggle("rotate")
+      let panel = this.nextElementSibling
       if (panel.style.maxHeight) {
         panel.style.maxHeight = null;
       } else {
@@ -891,6 +891,7 @@ function handleBookmarkDisplayAction(chapTitle, url) {
             currentParaBookMarkContent = e.target.textContent.slice(0, 20)
           }
           pTags[i].prepend(bookmarkBtn)
+          bookmarkBtn.style.display = 'block'
         })
       }
       
@@ -898,9 +899,10 @@ function handleBookmarkDisplayAction(chapTitle, url) {
 
 function createTOCModal(bookNumber) {
   let tocModal = document.getElementById('tocModal')
-  let tocModalImg = document.createElement('img')
-  tocModalImg.src = "/assets/book.png"
-  tocModal.appendChild(tocModalImg)
+  tocModal.style.display = "block"
+  // let tocModalImg = document.createElement('img')
+  // tocModalImg.src = "/assets/book.png"
+  // tocModal.appendChild(tocModalImg)
 
   let modalView = document.getElementById('tocModalView')
   let closeBtn = document.getElementById('closeBtn')
@@ -1007,16 +1009,26 @@ function createLoginModal() {
   
 }
 
-function setProgressbarBackToTop() {
+function setReadingProgessBar() {
   let progressBar = document.getElementById("progressBar")
-  let backToTop = document.getElementById("backToTop")
-  window.onscroll = () => onScrollAction(progressBar, backToTop)
+  window.addEventListener('scroll', () => onScrollAction(progressBar))
 
-  function onScrollAction(progressBar, backToTop) {
+  function onScrollAction(progressBar) {
     var winScroll = document.body.scrollTop || document.documentElement.scrollTop;
     var height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
     var scrolled = (winScroll / height) * 100;
     progressBar.style.width = scrolled + "%";
+  }
+}
+
+function backToTopBtn() {
+  let backToTop = document.getElementById("backToTop")
+  window.addEventListener('scroll', () => onScrollAction(backToTop))
+
+  function onScrollAction(backToTop) {
+    var winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+    var height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+    var scrolled = (winScroll / height) * 100;
     if(scrolled > 8) backToTop.style.display = 'block'
     else backToTop.style.display = 'none'
   }
@@ -1033,11 +1045,15 @@ function somethingWrongMsg() {
 }
 
 function scrollBookmarkParaInView(urlLocation){
-  urlLocation = urlLocation.slice(urlLocation.indexOf('#')+1);
-  const element = document.getElementById(urlLocation);
-  element.scrollIntoView();
-  element.classList.add("hover")
-  setTimeout(() => element.classList.remove("hover"), 4000)
+  try {
+    urlLocation = urlLocation.slice(urlLocation.indexOf('#')+1);
+    const element = document.getElementById(urlLocation);
+    element.scrollIntoView();
+    element.classList.add("hover")
+    setTimeout(() => element.classList.remove("hover"), 4000)
+  } catch (error) {
+    
+  }
 }
 
 function hideloader() {
@@ -1122,7 +1138,7 @@ function enableDarkMode() {
   root.style.setProperty("--header-bg-color-theme-light", "#555")
   root.style.setProperty("--global-bg-color", "#282828")
   root.style.setProperty("--global-text-color", "#fff")
-  root.style.setProperty("--para-hover-color", "rgb(72, 71, 71)")
+  root.style.setProperty("--para-hover-color", "rgb(72, 71, 71, .3)")
   root.style.setProperty("--breadcrumbs-boxshadow-color", "#f7f5f530")
   root.style.setProperty("--bookmarkbtn-boxshadow-color", "rgba(232, 232, 232, 0.5)")  
   root.style.setProperty("--breadcrumbs-last-crumb-color", "#c4c4c4")
@@ -1140,6 +1156,8 @@ function disableDarkMode() {
   root.style.setProperty("--bookmarkbtn-boxshadow-color", "rgba(117, 116, 116, 0.5)")
   root.style.setProperty("--breadcrumbs-last-crumb-color", "gray")
 }
+
+backToTopBtn()
 
 let burger = document.querySelector(".burger")
 let navDrawer = document.querySelector("#nav-login")

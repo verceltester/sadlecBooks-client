@@ -7,7 +7,7 @@
 
 :root{
   --body-font-size: 20px;
-  --bookmarkbtn-boxshadow-color: rgba(232, 232, 232, 0.5);
+  --bookmarkbtn-boxshadow-color: rgba(117, 116, 116, 0.5);
   --primary-color: #de6843;
   --global-bg-color: #fff;
   --global-text-color: #000;
@@ -17,7 +17,7 @@
   --header-shadow-theme-light: 0 0 15px #0000001a;
   --header-shadow-theme-dark: 0 0 15px #fff;
   --link-btn-hover-color: #de6843;
-  --para-hover-color: rgba(228, 222, 212, 0.5);
+  --para-hover-color: rgba(228, 222, 212, 0.25);
   --breadcrumbs-boxshadow-color: #0000003b;
   --breadcrumbs-last-crumb-color: gray;
   
@@ -69,26 +69,28 @@ hr {
 
 /* ------------------------ all p tags bookmark button ----------------*/
 #bookmarkBtn {
+  display: none;
   position: sticky;
   top: 20%;
   font-size: 32px;
   cursor: pointer;
   float: right;
-  margin-right: -5rem;
+  margin-right: -4.7rem;
+  margin-left: 5px;
 }
 
 #bookmarkBtn img {
-  width: 40px;
+  width: 32px;
   padding: 6px;
   box-shadow: var(--bookmarkbtn-boxshadow-color) 0px 0px 20px 0px;
   background: white;
-  transform: translateY(-10px);
+  transform: translateY(-5px);
 }
 
 /* ------------------------ all p tags bookmark button ----------------*/
 
-p:hover,
-p.hover {
+.text-container p:hover,
+.text-container p.hover {
   background-color: var(--para-hover-color);
 }
 
@@ -337,6 +339,10 @@ header {
   border-radius: 7px;
 }
 
+.book h3 {
+  font-size: 1.3rem;
+}
+
 /*-------------------------------Book details page container-----------------------*/
 
 #details-container {  
@@ -367,6 +373,11 @@ header {
   flex: 1 1 auto; 
 }
 
+#bookOtherDetails h1 {
+  margin-bottom: 30px;
+  font-size: 1.8rem;
+}
+
 .bookDetailsBtn {
   max-width: 320px;
   width: 100%;
@@ -380,19 +391,20 @@ header {
   padding: 2.5rem;
 }
 
-.toc-container h1{
-  font-size: 1.6rem;
-}
-.toc-container h2{
-  font-size: 1.5rem;
-}
-
 .toc-book-title {
   font-size: 2.4rem;
-  margin-bottom: 1rem;
+  margin-bottom: .5rem;
+  margin-top: 3rem;
   text-align: center;
   font-weight: bold;
   color: var(--primary-color);
+}
+
+#tocContentText {
+  text-align: center;
+  color: var(--global-text-color);
+  font-size: 2rem;
+  font-weight: bold;
 }
 
 .chapName {
@@ -400,16 +412,22 @@ header {
   align-items: center;
   margin-bottom: .5rem;
   margin-top: .5rem;
-  font-size: 1.5rem;
-  background-color: var(--header-bg-color-theme-light);
+  font-size: .8rem;
   color: var(--global-text-color);
   padding: 8px 18px;
-  border-radius: 5px;
+  cursor: pointer;
+}
+
+.tocChapKids h1 {
+  margin-left: 2rem;
+  margin-bottom: 1rem;
+  font-size: 1.7rem;
 }
 
 .sub1Name {
-  margin-left: 3rem;
-  margin-bottom: 15px;
+  margin-left: 3.5rem;
+  margin-bottom: 6px;
+  font-size: 1.4rem;
   color: var(--global-text-color);
 }
 
@@ -481,11 +499,10 @@ header {
  margin-bottom: 2rem;
  line-height: 2rem;
  box-shadow: 0 0 5px var(--breadcrumbs-boxshadow-color);
- padding: 10px;
- padding-bottom: 0;
+ padding: 22px 30px 8px 30px;
  border-top-left-radius: 20px;
  border-top-right-radius: 20px;
- background-color:  rgba(228, 222, 212, 0.5);
+ background-color:  var(--para-hover-color);
 }
 
 .breadcrumbs a {
@@ -525,20 +542,26 @@ header {
 /*---------------------------------Back to top btn ----------------------------------*/
 
 #backToTop {
+  background-color: #b73c1d;;
+  border-radius: 4px 4px 0 0;
+  bottom: 0;
   display: none;
+  height: 35px;
   position: fixed;
-  bottom: 1.2rem;
-  right: 1rem;
-  cursor: pointer;
-  font-size: 2rem;
-  background-color: #fff;
-  color: var(--primary-color);
-  box-shadow: 0 0 5px #ff5906;;
-  width: 2.5rem;
-  height: 2.5rem;
   text-align: center;
-  border-radius: 50%;
-  text-decoration: none;
+  right: 20px;
+  width: 48px;
+  z-index: 10000;
+  transition: all .2s ease-in-out;
+}
+
+#backToTop:hover {
+  background-color: var(--link-btn-hover-color);
+}
+
+#backToTop img {
+  width: 33px;
+  margin-top: 6px;
 }
 
 
@@ -686,7 +709,7 @@ form {
 
 /*---------------------------------- TOC Modal CSS ----------------------------------*/
 
-#tocModal {
+/* #tocModal {
   position: fixed;
   bottom: 1rem;
   left: 1rem;
@@ -695,6 +718,41 @@ form {
 
 #tocModal img  {
   width: 45px;
+} */
+
+#tocModal {
+  background-color: #b73c1d;;
+  border-radius: 0 6px 6px 0;
+  bottom: 20px;
+  left: -85px;
+  display: none;
+  height: 35px;
+  position: fixed;
+  cursor: pointer;
+  z-index: 10000;
+  transition: all .2s ease-in-out 0s;
+}
+
+#tocModal div {
+  display: flex;
+  justify-content: center;
+  margin-top: 5.5px;
+  margin-left: 4px;
+  font-size: 20px;
+  font-weight: bold;
+  color: white;
+}
+
+#tocModal:hover {
+  background-color: var(--link-btn-hover-color);  
+  left: 0px;
+}
+
+#tocModal img {
+  width: 32px;
+  transform: rotate(90deg);
+  margin-bottom: 4px;
+  margin-left: 7px;
 }
 
 .modalView {
@@ -719,7 +777,11 @@ form {
 }
 
 #modal-text h1 {
-  font-size: 1.8rem;
+  font-size: 1.5rem;
+}
+
+#modal-text .sub1Name .sub2Name{
+  font-size: 1rem;
 }
 
 #modal-text a:hover {
@@ -955,5 +1017,10 @@ form {
 
   .modal-content {
     width: 95%;
+    padding: 2rem 0rem;
+  }
+
+  .modal-content #closeBtn {
+    margin-right: 16px;
   }
 }
