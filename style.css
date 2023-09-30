@@ -573,7 +573,7 @@ form {
 }
 
 .form-title {
-  font-size: 2.2rem;
+  font-size: 1.8rem;
   text-align: center;
   margin-bottom: 2rem;
   margin-top: 2rem;
@@ -584,14 +584,9 @@ form {
   display: flex;
   flex-direction: column;
   gap: .5rem;
-  width: 60%;
   margin: auto;
 }
 
-.form-container label {
-  font-size: 1.5rem;
-  color: var(--global-text-color);
-}
 .form-container input {
   margin-bottom: 2rem;
   padding: .5rem 1rem;
@@ -609,11 +604,16 @@ form {
   cursor: pointer;
 }
 
+.form-container span {
+  margin-top: 20px;
+  font-size: 18px;
+  color: var(--global-text-color);
+}
+
 .form-container a {
-  text-align: center;
-  font-size: 2rem;
   cursor: pointer;
   margin-top: 1rem;
+  color:#b73c1d;
 }
 
 /*---------------------------------Profile page ----------------------------------*/

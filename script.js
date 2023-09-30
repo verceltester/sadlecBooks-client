@@ -385,6 +385,9 @@ function loginUser() {
   let topContainer = document.getElementById("container")
   let shadowContainer = document.createElement('div')
   shadowContainer.classList.add("box-shadow")
+  shadowContainer.style.maxWidth = "500px"
+  shadowContainer.style.margin = "auto"
+  shadowContainer.style.padding = "25px 15px 70px 15px"
   let form = document.createElement('form')
 
   form.innerHTML = `<form>
@@ -393,21 +396,20 @@ function loginUser() {
     </div>
 
     <div class="form-container">
-      <label for="uname"><b>Username</b></label>
       <input type="email" placeholder="Enter Username" name="uname" required>
 
-      <label for="psword"><b>Password</b></label>
       <input type="password" placeholder="Enter Password" name="psword" required>
         
       <button class="link-btn" type="submit">Login</button>
 
-      <a class="text-links" href="/register">Register as a new user</a>
+      <span>Not registered? <a class="text-links" href="/register">Register here.</a></span>
     </div>
   </form>`
   // topContainer.appendChild(form)
   shadowContainer.appendChild(form);
   topContainer.appendChild(shadowContainer)
   hideloader()
+  SetUserLoggedInDisplay()
 
   form.addEventListener("submit", (e) => {
     showloader()
@@ -454,38 +456,38 @@ function registerNewUser() {
   let topContainer = document.getElementById("container")
   let shadowContainer = document.createElement('div')
   shadowContainer.classList.add("box-shadow")
+  shadowContainer.style.maxWidth = "500px"
+  shadowContainer.style.margin = "auto"
+  shadowContainer.style.padding = "15px"
   let form = document.createElement('form')
 
   form.innerHTML = `<form class="login-form">
   <div class="form-title">
-    <span>Register as a new user</span>
+    <h5>Register as a new user</h5>
   </div>
 
   <div class="form-container">
-    <label for="name"><b>Name*</b></label>
     <input type="text" placeholder="Enter your name" name="name" required>
 
-    <label for="uname"><b>Username*</b></label>
     <input type="email" placeholder="Enter email" name="uname" required>
 
-    <label for="birthday">Birthday</label>
-    <input type="date" id="birthday" name="birthday" required> 
+    <input type="date" placehold="Enter your Birth date" id="birthday" name="birthday" required> 
 
-    <label for="psword"><b>Password*</b></label>
     <input type="password" placeholder="Enter Password" name="psword" required>
 
-    <label for="cnfpsword"><b>Confirm Password*</b></label>
     <input type="password" placeholder="Enter Password again" name="cnfpsword" required>
 
     <div style='display:inline; font-size: 1.3rem'><input type="checkbox" name="tc" require>
     <label for="tc">I agree to the terms and conditions.* </label></div>
       
     <button class="link-btn" type="submit">Register</button>
+    <span>Already registered? <a class="text-links" href="/login">Login here.</a></span>
   </div>
 </form>`
   shadowContainer.appendChild(form);
   topContainer.appendChild(shadowContainer)
   hideloader()
+  SetUserLoggedInDisplay()
 
 form.addEventListener("submit", (e) => {
   e.preventDefault()
@@ -940,9 +942,13 @@ function createTOCModal(bookNumber) {
 
 function createLoginModal() {
   let modalView = document.getElementById('tocModalView')
+  let modalTextContainer = document.getElementsByClassName('modal-content')
+  modalTextContainer[0].style.maxWidth = "500px"
+  
   let closeBtn = document.getElementById('closeBtn')
   closeBtn.style.display = "none"
   let modalContent = document.getElementById('modal-text')
+  modalContent.style.margin = "25px"
 
   let form = document.createElement('form')
 
@@ -952,15 +958,13 @@ function createLoginModal() {
     </div>
 
     <div class="form-container">
-      <label for="uname"><b>Username</b></label>
       <input type="email" placeholder="Enter Username" name="uname" required>
 
-      <label for="psword"><b>Password</b></label>
       <input type="password" placeholder="Enter Password" name="psword" required>
         
       <button class="link-btn" type="submit">Login</button>
 
-      <a class="text-links" href="/register">Register as a new user</a>
+      <span>Not registered? <a class="text-links" href="/register">Register here.</a></span>
     </div>
   </form>`
 
