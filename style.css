@@ -8,7 +8,7 @@
 :root{
   --body-font-size: 20px;
   --bookmarkbtn-boxshadow-color: rgba(117, 116, 116, 0.5);
-  --primary-color: #de6843;
+  --primary-color: #b73c1d;
   --global-bg-color: #fff;
   --global-text-color: #000;
   --body-bg-color-theme-light: #f9faff;
@@ -162,6 +162,7 @@ header {
   font-size: 2rem;
   color: var(--primary-color);
   font-weight: bold;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
 }
 
 #nav-login {
@@ -207,8 +208,8 @@ header {
   width: 20px;
   height: 20px;
   position: absolute;
-  left: 2px;
-  top: .5px;
+  left: 1px;
+  top: 0.9px;
   border-radius: 50%;
   transition: transform 0.2s linear;
 }
@@ -361,6 +362,10 @@ header {
   align-items: center;
   padding-left: 1rem;
   flex: 1 1 auto;
+  position: sticky;
+  top: 80px;
+  height: 100%;
+
 }
 
 #bookCoverDetails img {
@@ -392,7 +397,7 @@ header {
 }
 
 .toc-book-title {
-  font-size: 2.4rem;
+  font-size: 30px;
   margin-bottom: .5rem;
   margin-top: 3rem;
   text-align: center;
@@ -445,9 +450,10 @@ header {
 /*-------------------------------TOC DropDown styles -----------------*/
 
 .tocDropDownBtn {
-  min-width: 20px;
-  height: 20px;
+  min-width: 10px;
+  height: 15px;
   margin-right: 10px;
+  margin-bottom: 3px;
   cursor: pointer;
   transition: all 0.1s ease-in;
 }
@@ -485,6 +491,7 @@ header {
 .nextBtn, .prevBtn{
   padding: .4rem 2rem;
   width: 132px;
+  font-size: 20px;
 }
 
 .nextBtn {
@@ -511,9 +518,9 @@ header {
 
 .breadcrumbs .crumbs::before {  
   color: var(--primary-color);
-  content: '>';
+  content: "›";
   display: inline-block;
-  font-size: 20px;
+  font-size: 35px;
   font-weight: 1000;
   margin: 0 20px;
   padding-bottom: 4px;
@@ -624,7 +631,12 @@ form {
 }
 #profile-details-container h1{
   text-align: center;
-  margin-bottom: 2rem;
+  font-size: 24px;
+}
+
+#profile-email {
+  text-align: center;
+  font-size: 20px;
 }
 
 #profile-details {
@@ -637,11 +649,6 @@ form {
   display: flex;
   align-items: center;
   justify-content: center;
-}
-
-#profile-email {
-  text-align: center;
-  font-size: 2rem;
 }
 
 /* input[type=file]::file-selector-button{
@@ -669,26 +676,46 @@ form {
 #bookmarks {
   border: 1px var(--global-text-color) solid;
   border-radius: 10px;
+  margin-top: 20px;
 }
 
 #bookmarks h3 {
+  margin-top: 1rem;
   margin-bottom: 1rem;
+  text-align: center;
+  font-size: 28px;
+  /* border-bottom: 1px solid gray; */
 }
 
 .indi-bookmark {
   display: flex;
-  justify-content: space-between;
-  gap: 3rem;
-  padding: .6rem;
-  align-items: center;
+  flex-direction: column;
+  gap: .5rem;
   border-bottom: 1px solid gray;
 }
+
+.bookmark-title {
+  padding: 10px;
+  font-size: 22px;
+  background-color: var(--header-bg-color-theme-light);;
+}
+
+.bookmark-content {
+  padding: 0px 10px 20px 10px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+/* .indi-bookmark:first-child {
+  border-top: 1px solid gray;
+} */
 
 .indi-bookmark:last-child {
   border: none;
 }
 
-.del-bookmark-img {
+.del-bookmark-btn {
   /* width: 25px; */
   height: 100%;
   cursor: pointer;
@@ -697,6 +724,7 @@ form {
   border: none;
   padding: 8px 13px;
   border-radius: 3px;
+  align-self: end;
 }
 
 .del-bookmark-img:hover {
@@ -778,6 +806,7 @@ form {
 
 #modal-text h1 {
   font-size: 1.5rem;
+  color: var(--global-text-color);
 }
 
 #modal-text .sub1Name .sub2Name{
@@ -914,6 +943,11 @@ form {
   .toc-container {
     padding: 1rem;
   }
+
+  #bookCoverDetails {
+    position: relative;
+    top: 0;
+  }
 }
 
 
@@ -988,6 +1022,10 @@ form {
     margin-right: 0;
     width: 20px;
     opacity: 85%;
+  }
+
+  #bookCoverDetails {
+    padding-left: 0;
   }
 
   .footnotes {

@@ -51,7 +51,7 @@ async function fetchAndDisplayBookDetails(url) {
   let detailsContainer = document.createElement('div')
   detailsContainer.setAttribute("id", "details-container")
   detailsContainer.innerHTML = `<div id="book-details">
-                                  <div style="position:sticky; top: 0" id="bookCoverDetails">
+                                  <div id="bookCoverDetails">
                                     <img src="${bookDetails.imagelink}"></img>
                                     <a class="link-btn bookDetailsBtn" href="/book/${bookDetails.id}/toc">Read Book</a>
                                     <a class="link-btn bookDetailsBtn" href="https://www.aurokart.com" target="_blank">Buy Physical Copy</a>
@@ -158,7 +158,7 @@ async function fetchAndDisplayChapterText(url) {
     
       let bookTitle = document.createElement('h1')
       bookTitle.classList.add("toc-book-title")
-      bookTitle.innerText = chapText.chapTitle
+      bookTitle.innerText = chapText.chapTitle.replace(/\\(.*?)]\\|\\/, "")
       textContainer.appendChild(bookTitle)
       
       let textDiv = document.createElement('div')
@@ -238,6 +238,9 @@ async function fetchAndDisplaySubhead1Text(url) {
       let crumb3 = document.createElement('div')
       crumb3.classList.add("crumbs")
       crumb3.innerText = subhead1Text.subhead1Titles
+      // let breadCaret = document.createElement("img")
+      // breadCaret.classList.add("bread-caret")
+      // breadCaret.src = "/assets/breadCaret.png"
       breadContainer.appendChild(crumb1)
       breadContainer.appendChild(crumb2)
       breadContainer.appendChild(crumb3)
@@ -246,7 +249,7 @@ async function fetchAndDisplaySubhead1Text(url) {
     
       let sub1Title = document.createElement('h1')
       sub1Title.classList.add("toc-book-title")
-      sub1Title.innerText = subhead1Text.subhead1Titles
+      sub1Title.innerText = subhead1Text.subhead1Titles.replace(/\\(.*?)]\\|\\/, "")
       textContainer.appendChild(sub1Title)
       
       let textDiv = document.createElement('div')
@@ -337,7 +340,7 @@ async function fetchAndDisplaySubhead2Text(url) {
     
       let sub2Title = document.createElement('h1')
       sub2Title.classList.add("toc-book-title")
-      sub2Title.innerText = subhead2Text.subhead2Titles
+      sub2Title.innerText = subhead2Text.subhead2Titles.replace(/\\(.*?)]\\|\\/, "")
       textContainer.appendChild(sub2Title)
       
       let textDiv = document.createElement('div')
@@ -560,9 +563,9 @@ async function profileSection() {
     let detailsContainer = document.createElement('div')
     detailsContainer.setAttribute('id', "profile-details-container")
 
-    let welcomeTitle = document.createElement('h1')
-    welcomeTitle.innerText = `Hello ${profileData.name}`
-    detailsContainer.appendChild(welcomeTitle)
+    // let welcomeTitle = document.createElement('h1')
+    // welcomeTitle.innerText = `Hello ${profileData.name}`
+    // detailsContainer.appendChild(welcomeTitle)
 
     let profileDetails = document.createElement('div')
     profileDetails.setAttribute("id", "profile-details")
@@ -570,8 +573,12 @@ async function profileSection() {
     let profileImage = document.createElement('div')
     profileImage.setAttribute("id", "profile-img")
 
-    profileImage.innerHTML = `<img style="width:150px" src="/assets/defaultAvatar.png"></img>`
+    profileImage.innerHTML = `<img style="width:150px" src="/assets/defaultAvatar2.png"></img>`
     profileDetails.appendChild(profileImage)
+
+    let welcomeTitle = document.createElement('h1')
+    welcomeTitle.innerText = `Hello ${profileData.name}`
+    profileDetails.appendChild(welcomeTitle)
 
     let emailDiv = document.createElement('div')
     emailDiv.setAttribute("id", "profile-email")
@@ -584,20 +591,22 @@ async function profileSection() {
     //     <small id="status"></small>`
     // profileImage.appendChild(upload)
 
-    let sectionTitle = document.createElement('h3')
-    sectionTitle.innerText = "Your bookmarks :"
-    profileDetails.appendChild(sectionTitle)
+    // profileDetails.appendChild(sectionTitle)
 
     let bookmarks = document.createElement('div')
     bookmarks.setAttribute("id", "bookmarks")
+
+    let bookmarkSection = document.createElement('h3')
+    bookmarkSection.innerText = "Your Bookmarks"
+    bookmarks.appendChild(bookmarkSection)
     
     profileData.profile.mybookmark.map((bookm, i) => {
       let bookmarkDiv = document.createElement('div')
       bookmarkDiv.classList.add('indi-bookmark')
       bookmarkDiv.innerHTML = `<div class="bookmark-title">
-                                <a class="text-links" href="${bookm.bookmarks.url}">${i+1}. 🔗<strong>${bookm.bookmarks.bookmarkTitle}</strong>
-                                <div>(${bookm.bookmarks.content}...)</div></a></div>
-                                <button id="${bookm.id}" class="del-bookmark-img">Delete</button>`
+                                <strong> ${i+1}. ${bookm.bookmarks.bookmarkTitle}</strong></div>
+                                <div class="bookmark-content"><a class="text-links" href="${bookm.bookmarks.url}">${bookm.bookmarks.content}...</a>
+                                <button id="${bookm.id}" class="del-bookmark-btn">Delete</button></div>`
       bookmarks.appendChild(bookmarkDiv)
     })
     profileDetails.appendChild(bookmarks)
@@ -641,9 +650,9 @@ async function profileSection() {
     //   // console.log(file.files[0])
     // })
 
-    let deleteBookmarksImg = document.getElementsByClassName("del-bookmark-img")
-    for(let i = 0; i<deleteBookmarksImg.length; i++) {
-      deleteBookmarksImg[i].addEventListener('click', (e) => {
+    let deleteBookmarksBtn = document.getElementsByClassName("del-bookmark-btn")
+    for(let i = 0; i<deleteBookmarksBtn.length; i++) {
+      deleteBookmarksBtn[i].addEventListener('click', (e) => {
         showloader()
         showInfoToast("Deleting bookmark")
         fetch (`${API_URL}/user/bookmark/`, {
@@ -757,7 +766,7 @@ function createTOCwithLinks(TOCData){
       chapter.appendChild(dropDownText)
       TOCList.appendChild(chapter)
       let chapTitleText = document.createElement("h1")
-      chapTitleText.innerText = `${i+1}. ${chaps.chapTitle}`
+      chapTitleText.innerText = `${i+1}. ${chaps.chapTitle.replace(/\\(.*?)]\\|\\/, "")}`
       chapKids.appendChild(chapTitleText)
     } else {
       let chapter = document.createElement('div')      
@@ -773,7 +782,7 @@ function createTOCwithLinks(TOCData){
       let aTag = document.createElement('a');
       aTag.href = `/book/${TOCData.id}/${chaps.id}`
       let chapTitleText = document.createElement('h1')
-      chapTitleText.innerText = `${i+1}. ${chaps.chapTitle}`
+      chapTitleText.innerText = `${i+1}. ${chaps.chapTitle.replace(/\\(.*?)]\\|\\/, "")}`
       chapTitleText.classList.add("text-links")
       aTag.appendChild(chapTitleText)
       chapKids.appendChild(aTag)
@@ -781,14 +790,14 @@ function createTOCwithLinks(TOCData){
     chaps.sub1.map(sub1 => {
       if(!sub1.hastext){
         let subhead1 = document.createElement("h2")
-        subhead1.innerText = sub1.subhead1Titles
+        subhead1.innerText = sub1.subhead1Titles.replace(/\\(.*?)]\\|\\/, "")
         subhead1.classList.add("sub1Name")
         chapKids.appendChild(subhead1)
       } else {
         let aTag = document.createElement('a');
         aTag.href = `/book/${TOCData.id}/${chaps.id}/${sub1.id}`
         let subhead1 = document.createElement("h2")
-        subhead1.innerText = sub1.subhead1Titles
+        subhead1.innerText = sub1.subhead1Titles.replace(/\\(.*?)]\\|\\/, "")
         subhead1.classList.add("sub1Name", "text-links")
         aTag.appendChild(subhead1)
         chapKids.appendChild(aTag)
@@ -797,7 +806,7 @@ function createTOCwithLinks(TOCData){
         let aTag = document.createElement('a');
         aTag.href = `/book/${TOCData.id}/${chaps.id}/${sub1.id}/${sub2name.id}`
         let subhead2 = document.createElement('h2')
-        subhead2.innerText = sub2name.subhead2Titles
+        subhead2.innerText = sub2name.subhead2Titles.replace(/\\(.*?)]\\|\\/, "")
         subhead2.classList.add("sub2Name", "text-links")
         aTag.appendChild(subhead2)
         chapKids.appendChild(aTag)
@@ -1142,7 +1151,7 @@ function enableDarkMode() {
   root.style.setProperty("--header-bg-color-theme-light", "#555")
   root.style.setProperty("--global-bg-color", "#282828")
   root.style.setProperty("--global-text-color", "#fff")
-  root.style.setProperty("--para-hover-color", "rgb(72, 71, 71, .3)")
+  root.style.setProperty("--para-hover-color", "rgb(72, 71, 71, .4)")
   root.style.setProperty("--breadcrumbs-boxshadow-color", "#f7f5f530")
   root.style.setProperty("--bookmarkbtn-boxshadow-color", "rgba(232, 232, 232, 0.5)")  
   root.style.setProperty("--breadcrumbs-last-crumb-color", "#c4c4c4")
@@ -1155,7 +1164,7 @@ function disableDarkMode() {
   root.style.setProperty("--header-bg-color-theme-light", "rgb(228, 222, 212)")
   root.style.setProperty("--global-bg-color", "#fff")
   root.style.setProperty("--global-text-color", "#000")
-  root.style.setProperty("--para-hover-color", "rgb(232, 232, 232)")
+  root.style.setProperty("--para-hover-color", "rgb(232, 232, 232, .4)")
   root.style.setProperty("--breadcrumbs-boxshadow-color", "#0000003b")
   root.style.setProperty("--bookmarkbtn-boxshadow-color", "rgba(117, 116, 116, 0.5)")
   root.style.setProperty("--breadcrumbs-last-crumb-color", "gray")
