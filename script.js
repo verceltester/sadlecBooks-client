@@ -717,7 +717,7 @@ async function bookIndexPage(url) {
 
       let indexTitle = document.createElement('h1')
       indexTitle.classList.add("index-title")
-      indexTitle.innerText = "Index of"
+      indexTitle.innerText = "Index of " + indexWords[0].bookname
       textContainer.appendChild(indexTitle)
 
       let indexContainer = document.createElement("div")
@@ -780,12 +780,16 @@ async function bookIndexPage(url) {
             let closeBtn = document.getElementById('closeBtn')
             let modalTextContainer = document.getElementsByClassName('modal-content')
             modalTextContainer[0].style.height = "initial"
+            modalTextContainer[0].style.width = "fit-content"
+            modalTextContainer[0].style.minWidth = "50%"
+            modalTextContainer[0].style.maxWidth = "90%"
 
             let modalContent = document.getElementById('modal-text')
             modalContent.innerHTML = ""
 
             let heading = document.createElement("h1")
-            heading.style.fontSize = "35px"
+            heading.style.fontSize = "33px"
+            heading.style.padding = "0px 13px"
             heading.innerText = "Index of " + indexData.outerText
             heading.style.borderBottom = "1px solid rgba(0,0,0,.1)"
             modalContent.appendChild(heading)
@@ -797,14 +801,14 @@ async function bookIndexPage(url) {
             indexDetails.classList.add("index-details")
             for(let i = 0; i < indexUrl.length; i++){
               let aTag = document.createElement("a")
-              aTag.innerText = indexUrl[i].urltext+','
+              aTag.innerText = indexUrl[i].urltext+', '
               // console.log(`${indexUrl[i].url.replace(/^.*?page\//, "")}`)
               aTag.href = "https://books.resurgentindia.org/book/" + indexUrl[i].url
               aTag.target = "_blank"
               // aTag.classList.add('text-links')
               indexDetails.appendChild(aTag)
             }
-            console.log(indexUrl)
+
             modalContent.appendChild(indexDetails)
 
             modalView.style.display = 'block'
@@ -851,7 +855,10 @@ function SetUserLoggedInDisplay() {
     // logArea.appendChild(defaultAvatar)
     loginMenu.innerHTML = `<div><a class="text-links" href="/profile">Profile</a></div>
     <div"><a class="text-links" href="/profile">Bookmarks</a></div>
-    <div id="logoutBtn"><a class="text-links" href="/">Logout</a></div>`
+    <div id="logoutBtn"><a class="text-links" href="/">Logout</a></div>
+    <div class="indexLink"><a class="text-links" href="https://books.resurgentindia.org/indexpage/1" target="_blank">Index CWSA1</a></div>
+    <div class="indexLink"><a class="text-links" href="https://books.resurgentindia.org/indexpage/2" target="_blank">Index CWSA2</a></div>
+    <div class="indexLink"><a class="text-links" href="https://books.resurgentindia.org/indexpage/3" target="_blank">Index CWM</a></div>`
     document.getElementById('logoutBtn')
     logoutBtn.addEventListener('click', () => {
       localStorage.removeItem("token")

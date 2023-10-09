@@ -242,6 +242,7 @@ header {
   color: var(--global-text-color);
   text-align: left;
   animation: loginMenuAnimate .5s;
+  white-space: nowrap;
 }
 
 #loginFirstLetter {
@@ -680,6 +681,7 @@ form {
   font-size: 25px;
   margin-right: 15px;
   text-decoration: underline !important;
+  text-underline-offset: 3px;
   color: #0d6efd !important;
 }
 
