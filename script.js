@@ -555,7 +555,6 @@ async function profileSection() {
     SetUserLoggedInDisplay()
   } else if (res.status === 200) {
     let profileData = await res.json()
-    console.log(profileData)
     let topContainer = document.getElementById("container")
     let shadowContainer = document.createElement('div')
     shadowContainer.classList.add("box-shadow")
@@ -602,9 +601,10 @@ async function profileSection() {
     
     profileData.profile.mybookmark.map((bookm, i) => {
       let bookmarkDiv = document.createElement('div')
+      console.log(bookm)
       bookmarkDiv.classList.add('indi-bookmark')
       bookmarkDiv.innerHTML = `<div class="bookmark-title">
-                                <strong> ${i+1}. ${bookm.bookmarks.bookmarkTitle}</strong></div>
+                                <strong> ${bookm.bookmarks.bookmarkTitle}</strong></div>
                                 <div class="bookmark-content"><a class="text-links" href="${bookm.bookmarks.url}">${bookm.bookmarks.content}...</a>
                                 <button id="${bookm.id}" class="del-bookmark-btn">Delete</button></div>`
       bookmarks.appendChild(bookmarkDiv)
@@ -683,6 +683,145 @@ async function profileSection() {
     topContainer.appendChild(dataContainer)
     hideloader();
     SetUserLoggedInDisplay()
+  }
+}
+
+async function bookIndexPage(url) {
+  let res = await fetch(`${API_URL}${url}`, {
+    headers: {"Authorization": `Bearer ${localStorage.getItem("token")}`}
+  })
+  if(res.status === 401) {
+    createLoginModal()
+    hideloader();
+    localStorage.removeItem("token")
+    localStorage.removeItem("uName")
+    localStorage.removeItem("profileId")
+    SetUserLoggedInDisplay()
+  } else if(res.status === 200) {
+      let indexWords = await res.json();
+      indexWords.sort(function(a,b){
+        return a.word.localeCompare(b.word);
+      })
+      let letters = ["A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z"];
+      let alphaList = {"A":[], "B":[], "C":[],"D":[],"E":[],"F":[],"G":[],"H":[],"I":[],"J":[],"K":[],"L":[],"M":[],"N":[],"O":[],"P":[],"Q":[],"R":[],"S":[],"T":[],"U":[],"V":[],"W":[],"X":[],"Y":[],"Z":[]};
+      for(let i = 0; i < indexWords.length; i++) {
+        alphaList[indexWords[i].alphaTitle].push(indexWords[i])
+      }
+
+      let textTopContainer = document.getElementById('container')
+      let shadowBox = document.createElement('div')
+      shadowBox.classList.add("box-shadow")
+    
+      let textContainer = document.createElement('div')
+      textContainer.classList.add("text-container")
+
+      let indexTitle = document.createElement('h1')
+      indexTitle.classList.add("index-title")
+      indexTitle.innerText = "Index of"
+      textContainer.appendChild(indexTitle)
+
+      let indexContainer = document.createElement("div")
+      indexContainer.classList.add("index-container")
+
+      for(let i = 0; i<letters.length; i++){
+        if (alphaList[letters[i]].length > 0){
+          let letter = document.createElement("h3")
+          letter.innerText = letters[i]
+          indexContainer.appendChild(letter)
+          let words = document.createElement('div')
+          words.classList.add("index-words")
+          for(let j = 0; j < alphaList[letters[i]].length; j++){
+            let link = document.createElement("li")
+            let linkWord = document.createElement("a")
+            linkWord.setAttribute("id", alphaList[letters[i]][j].id)
+            linkWord.classList.add("text-links")
+            linkWord.innerText = alphaList[letters[i]][j].word
+            link.appendChild(linkWord)
+            words.appendChild(link)
+          }
+          indexContainer.appendChild(words)
+        }
+      }
+
+      textContainer.appendChild(indexContainer)
+
+      shadowBox.appendChild(textContainer)
+      textTopContainer.appendChild(shadowBox)
+      
+      document.getElementById("decreaseFont").classList.remove("hiddenClass")
+      document.getElementById("increaseFont").classList.remove("hiddenClass")
+      SetUserLoggedInDisplay()
+
+      // let allLi = document.getElementsByTagName("li")
+      // for(let i = 0; i < allLi.length; i++) {
+
+      // }
+
+      document.addEventListener('click', event => {
+        if (event.target.localName === "a") {
+          showIndexModal(event.target)
+        }
+      })
+
+      async function showIndexModal(indexData) {
+        let res = await fetch(`${API_URL}/indexurl/${indexData.id}`, {
+          headers: {"Authorization": `Bearer ${localStorage.getItem("token")}`}
+        })
+        if(res.status === 401) {
+          createLoginModal()
+          hideloader();
+          localStorage.removeItem("token")
+          localStorage.removeItem("uName")
+          localStorage.removeItem("profileId")
+          SetUserLoggedInDisplay()
+        } else if(res.status === 200) {
+            let indexUrl = await res.json();
+            let modalView = document.getElementById('tocModalView')
+            let closeBtn = document.getElementById('closeBtn')
+            let modalTextContainer = document.getElementsByClassName('modal-content')
+            modalTextContainer[0].style.height = "initial"
+
+            let modalContent = document.getElementById('modal-text')
+            modalContent.innerHTML = ""
+
+            let heading = document.createElement("h1")
+            heading.style.fontSize = "35px"
+            heading.innerText = "Index of " + indexData.outerText
+            heading.style.borderBottom = "1px solid rgba(0,0,0,.1)"
+            modalContent.appendChild(heading)
+
+            let indexDetails = document.createElement("div")
+            let wordName = document.createElement("span")
+            wordName.innerText = indexData.outerText
+            indexDetails.appendChild(wordName)
+            indexDetails.classList.add("index-details")
+            for(let i = 0; i < indexUrl.length; i++){
+              let aTag = document.createElement("a")
+              aTag.innerText = indexUrl[i].urltext+','
+              // console.log(`${indexUrl[i].url.replace(/^.*?page\//, "")}`)
+              aTag.href = "https://books.resurgentindia.org/book/" + indexUrl[i].url
+              aTag.target = "_blank"
+              // aTag.classList.add('text-links')
+              indexDetails.appendChild(aTag)
+            }
+            console.log(indexUrl)
+            modalContent.appendChild(indexDetails)
+
+            modalView.style.display = 'block'
+
+            closeBtn.onclick = function() {
+              modalView.style.display = 'none'
+            }
+          
+            window.onclick = function(e) {
+              if (e.target == modalView) {
+                modalView.style.display = "none";
+              }
+            }
+          }
+      }
+
+      hideloader()
   }
 }
 
@@ -865,7 +1004,6 @@ function handleBookmarkDisplayAction(chapTitle, url) {
         showInfoToast("Bookmark added!")
         else if (response.status === 401)
         showInfoToast("Bookmark already added!")
-        console.log(response)
         hideloader()
       })
     }
@@ -944,7 +1082,6 @@ function createTOCModal(bookNumber) {
   window.onclick = function(e) {
     if (e.target == modalView) {
       modalView.style.display = "none";
-      console.log("modalClick")
     }
   }
 }
@@ -958,6 +1095,7 @@ function createLoginModal() {
   closeBtn.style.display = "none"
   let modalContent = document.getElementById('modal-text')
   modalContent.style.margin = "25px"
+  modalContent.innerHTML = ""
 
   let form = document.createElement('form')
 
@@ -1059,7 +1197,7 @@ function somethingWrongMsg() {
 
 function scrollBookmarkParaInView(urlLocation){
   try {
-    urlLocation = urlLocation.slice(urlLocation.indexOf('#')+1);
+    urlLocation = urlLocation.slice(urlLocation.indexOf('#')+2);
     const element = document.getElementById(urlLocation);
     element.scrollIntoView();
     element.classList.add("hover")
@@ -1115,6 +1253,8 @@ else if (/^\/book\/\d+\/\d+\/\d+$/.test(url))
 fetchAndDisplaySubhead1Text(url)
 else if (/^\/book\/\d+\/\d+\/\d+\/\d+$/.test(url))
 fetchAndDisplaySubhead2Text(url)
+else if (/^\/indexpage\/\d+$/.test(url))
+bookIndexPage(url)
 else if(url === '/login')
 loginUser();
 else if(url === '/register')
