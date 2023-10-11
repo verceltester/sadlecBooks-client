@@ -1021,6 +1021,10 @@ function handleBookmarkDisplayAction(chapTitle, url) {
       for(let i = 0; i < pTags.length; i++) {
         pTags[i].setAttribute('id', i+1)
         if (pTags[i].textContent === "* * *") {pTags[i].style.textAlign = "center"}
+        if (pTags[i].textContent[0] === "@") {
+          pTags[i].innerHTML = pTags[i].innerHTML.substring(1)
+          pTags[i].style.textAlign = "center"
+        }
         if (pTags[i].textContent[0] === "‡") {
           pTags[i].style.marginLeft = "1.6rem"
           pTags[i].style.marginRight = "1.6rem"

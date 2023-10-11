@@ -17,10 +17,9 @@
   --header-shadow-theme-light: 0 0 15px #0000001a;
   --header-shadow-theme-dark: 0 0 15px #fff;
   --link-btn-hover-color: #de6843;
-  --para-hover-color: rgba(176, 167, 153, 0.25);
+  --para-hover-color: rgba(214, 205, 190, 0.5);
   --breadcrumbs-boxshadow-color: #0000003b;
   --breadcrumbs-last-crumb-color: gray;
-  
 }
 
 @font-face {
@@ -56,6 +55,14 @@ p a {
 
 h3, h4 {
   margin-top: 2rem;
+  margin-bottom: .5rem;
+}
+
+h5, h6 {
+  font-size: .9em;
+  padding-left: 8px;
+  margin-top: 1rem;
+  margin-bottom: .5rem;
 }
 
 hr {
@@ -494,7 +501,7 @@ header {
 .nextBtn, .prevBtn{
   padding: .4rem 2rem;
   width: 132px;
-  font-size: 20px;
+  font-size: 17px;
 }
 
 .nextBtn {
