@@ -6,7 +6,7 @@
 }
 
 :root{
-  --body-font-size: 20px;
+  --body-font-size: 18px;
   --bookmarkbtn-boxshadow-color: rgba(117, 116, 116, 0.5);
   --primary-color: #b73c1d;
   --global-bg-color: #fff;
@@ -17,7 +17,7 @@
   --header-shadow-theme-light: 0 0 15px #0000001a;
   --header-shadow-theme-dark: 0 0 15px #fff;
   --link-btn-hover-color: #de6843;
-  --para-hover-color: rgba(228, 222, 212, 0.25);
+  --para-hover-color: rgba(176, 167, 153, 0.25);
   --breadcrumbs-boxshadow-color: #0000003b;
   --breadcrumbs-last-crumb-color: gray;
   
@@ -25,7 +25,7 @@
 
 @font-face {
   font-family: "adDev";
-  src: url("/fonts/adDev.woff");
+  src: url("/fonts/bressay.woff2");
 }
 
 body {
@@ -160,7 +160,7 @@ header {
 }
 
 #header-container #logo {
-  font-size: 2rem;
+  font-size: 1.6rem;
   color: var(--primary-color);
   font-weight: bold;
   text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
@@ -343,7 +343,7 @@ header {
 }
 
 .book h3 {
-  font-size: 1.3rem;
+  font-size: 1.1rem;
 }
 
 /*-------------------------------Book details page container-----------------------*/
@@ -382,14 +382,14 @@ header {
 
 #bookOtherDetails h1 {
   margin-bottom: 30px;
-  font-size: 1.8rem;
+  font-size: 1.5rem;
 }
 
 .bookDetailsBtn {
   max-width: 320px;
   width: 100%;
   margin: .5rem;
-  font-size: 20px;
+  font-size: 1rem;
 }
 
 /*-------------------------------TOC Container -----------------*/
@@ -399,7 +399,7 @@ header {
 }
 
 .toc-book-title {
-  font-size: 30px;
+  font-size: 1.6rem;
   margin-bottom: .5rem;
   margin-top: 3rem;
   text-align: center;
@@ -410,7 +410,7 @@ header {
 #tocContentText {
   text-align: center;
   color: var(--global-text-color);
-  font-size: 2rem;
+  font-size: 1.6rem;
   font-weight: bold;
 }
 
@@ -419,7 +419,7 @@ header {
   align-items: center;
   margin-bottom: .5rem;
   margin-top: .5rem;
-  font-size: .8rem;
+  font-size: .7rem;
   color: var(--global-text-color);
   padding: 8px 18px;
   cursor: pointer;
@@ -428,20 +428,21 @@ header {
 .tocChapKids h1 {
   margin-left: 2rem;
   margin-bottom: 1rem;
-  font-size: 1.7rem;
+  font-size: 1.4rem;
 }
 
 .sub1Name {
   margin-left: 3.5rem;
   margin-bottom: 6px;
-  font-size: 1.4rem;
+  font-size: 1.2rem;
   color: var(--global-text-color);
 }
 
 .sub2Name {
   margin-left: 5rem;
-  margin-bottom: 15px;
-  font-size: 1.3rem;
+  margin-bottom: 10px;
+  margin-top: 10px;
+  font-size: 1.1rem;
   font-weight: normal;
   color: var(--global-text-color);
 }
@@ -503,7 +504,7 @@ header {
 /*---------------------------------- Breadcrumbs START----------------------------------*/
 
 .breadcrumbs {
- font-size: 1.2rem;
+ font-size: 1.05rem;
  margin-top: -1rem;
  margin-bottom: 2rem;
  line-height: 2rem;
@@ -668,27 +669,25 @@ form {
   margin-top: 35px;
   display: flex;
   flex-wrap: wrap;
+  font-size: 1.3rem;
 }
 
 .index-details span {
   color: var(--global-text-color);
-  font-size: 25px;
   margin-right: 15px;
   font-weight: bold;
 }
 
 .index-details a {
-  font-size: 25px;
-  margin-right: 15px;
-  text-decoration: underline !important;
-  text-underline-offset: 3px;
+  margin-right: 15px;  
   color: #0d6efd !important;
 }
 
 .index-details a:hover {
-  font-size: 25px;
   margin-right: 15px;
   color: #0045ad !important;
+  text-decoration: underline !important;
+  text-underline-offset: 3px;
 }
 
 /*---------------------------------Index page ----------------------------------*/
@@ -822,10 +821,10 @@ form {
 #tocModal div {
   display: flex;
   justify-content: center;
-  margin-top: 9.5px;
-  margin-left: 9px;
+  margin-top: 10.5px;
+  margin-left: 3px;
   margin-right: 7px;
-  font-size: 20px;
+  font-size: 18px;
   font-weight: bold;
   color: white;
 }
@@ -864,7 +863,7 @@ form {
 }
 
 #modal-text h1 {
-  font-size: 1.5rem;
+  font-size: 1.3rem;
   color: var(--global-text-color);
 }
 
@@ -1141,8 +1140,8 @@ form {
   }
   
   #tocModal div {
-    margin-top: 5.5px;
-    margin-left: 4px;
+    margin-top: 6.5px;
+    margin-left: 2px;
     margin-right: 0px;
   }
 }

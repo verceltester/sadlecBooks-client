@@ -44,7 +44,7 @@ async function fetchAndDisplayBookDetails(url) {
   let bookDetails = await res.json();
 
   const topContainer = document.getElementById('container')
-  topContainer.style.fontSize = "18px"
+  topContainer.style.fontSize = "16px"
   let booksContainer = document.createElement('div')
   booksContainer.classList.add("box-shadow")
 
@@ -788,9 +788,9 @@ async function bookIndexPage(url) {
             modalContent.innerHTML = ""
 
             let heading = document.createElement("h1")
-            heading.style.fontSize = "33px"
-            heading.style.padding = "0px 13px"
             heading.innerText = "Index of " + indexData.outerText
+            heading.style.fontSize = "1.6rem"
+            heading.style.padding = "0px 13px"
             heading.style.borderBottom = "1px solid rgba(0,0,0,.1)"
             modalContent.appendChild(heading)
 
@@ -1208,7 +1208,7 @@ function scrollBookmarkParaInView(urlLocation){
     const element = document.getElementById(urlLocation);
     element.scrollIntoView();
     element.classList.add("hover")
-    setTimeout(() => element.classList.remove("hover"), 4000)
+    setTimeout(() => element.classList.remove("hover"), 8000)
   } catch (error) {
     
   }
